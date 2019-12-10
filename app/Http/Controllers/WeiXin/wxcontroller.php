@@ -43,6 +43,23 @@ class wxcontroller extends Controller
             $data=file_get_contents($url);
             file_put_contents('wx_user.log',$data,FILE_APPEND);
         }
+        $touser=$xml_obj->ToUserName;
+        $from=$xml_obj->FromUserName;
+        $time=time();
+        //信息类型
+        $msg=$xml_obj->MsgType;
+        if($msg='text'){
+        $con=date('Y-m-d H:i:s',time()).$xml_obj->Content;
+            $jie='<xml>
+            <ToUserName><![CDATA['.$from.']]></ToUserName>
+            <FromUserName><![CDATA['.$touser.']]></FromUserName>
+            <CreateTime>'.$time.'</CreateTime>
+            <MsgType><![CDATA[text]]></MsgType>
+            <Content><![CDATA['.$con.']]></Content>
+            <MsgId>22562529975180832</MsgId>
+            </xml>';
+            echo $jie;
+        }
     }
 
          //获取用户的基本信息
