@@ -89,8 +89,27 @@ class wxcontroller extends Controller
               <MediaId><![CDATA['.$MediaId.']]></MediaId>
             </Voice>
           </xml>';
+          echo $jie;
         }
-        echo $jie;
+        //视频
+        if($msg=='video'){
+            $MediaId=$xml_obj->MediaId;
+            $title='公众号内测....haung';
+            $desc='视频发布于'.date('Y-m-d H:i:s',time()).'huang';
+            $jie='<xml>
+            <ToUserName><![CDATA['.$from.']]></ToUserName>
+            <FromUserName><![CDATA['.$touser.']]></FromUserName>
+            <CreateTime>'.$time.'</CreateTime>
+            <MsgType><![CDATA[video]]></MsgType>
+            <Video>
+            <MediaId><![CDATA['.$MediaId.']]></MediaId>
+              <Title><![CDATA['.$title.']]></Title>
+              <Description><![CDATA['.$desc.']]></Description>
+            </Video>
+          </xml>';
+          echo $jie;
+        }
+        
 
     }
 
