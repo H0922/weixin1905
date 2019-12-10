@@ -16,4 +16,4 @@ Route::get('/', function () {
 });
 
 Route::get('wx','WeiXin\wxcontroller@wx');
-Route::post('wx','Weixin\wxcontroller@wxer');
+Route::post('wx','WeiXin\wxcontroller@wxer');
