@@ -15,4 +15,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('wx','WeiXin/wxcontroller@wx');
+Route::get('wx','WeiXin\wxcontroller@wx');
