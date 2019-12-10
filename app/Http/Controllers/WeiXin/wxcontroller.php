@@ -43,12 +43,15 @@ class wxcontroller extends Controller
             $data=file_get_contents($url);
             file_put_contents('wx_user.log',$data,FILE_APPEND);
         }
+
+        //信息回复
         $touser=$xml_obj->ToUserName;
         $from=$xml_obj->FromUserName;
         $time=time();
         //信息类型
         $msg=$xml_obj->MsgType;
-        if($msg='text'){
+        //纯文本信息回复
+        if($msg=='text'){
         $con=date('Y-m-d H:i:s',time()).$xml_obj->Content;
             $jie='<xml>
             <ToUserName><![CDATA['.$from.']]></ToUserName>
@@ -60,6 +63,22 @@ class wxcontroller extends Controller
             </xml>';
             echo $jie;
         }
+        //图片信息回复
+        if($msg=='image'){
+            $PicUrl='您发送的图片时间为'.date('Y-m-d H:i:s',time()).$xml_obj->PicUrl;
+            $MediaId=$xml_obj->MediaId;
+            $jie='<xml>
+            <ToUserName><![CDATA['.$from.']]></ToUserName>
+            <FromUserName><![CDATA['.$touser.']]></FromUserName>
+            <CreateTime>'.$time.'</CreateTime>
+            <MsgType><![CDATA[image]]></MsgType>
+            <PicUrl><![CDATA['.$PicUrl.']]></PicUrl>
+            <MsgId>22562547357082207</MsgId>
+            <MediaId><![CDATA['.$MediaId.']]></MediaId>
+            </xml>';
+            echo $jie;
+        }
+
     }
 
          //获取用户的基本信息
