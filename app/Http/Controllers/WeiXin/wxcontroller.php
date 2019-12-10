@@ -59,23 +59,22 @@ class wxcontroller extends Controller
             <CreateTime>'.$time.'</CreateTime>
             <MsgType><![CDATA[text]]></MsgType>
             <Content><![CDATA['.$con.']]></Content>
-            <MsgId>22562529975180832</MsgId>
             </xml>';
             echo $jie;
         }
         //图片信息回复
         if($msg=='image'){
-            $PicUrl='您发送的图片时间为'.date('Y-m-d H:i:s',time()).$xml_obj->PicUrl;
+            // $PicUrl=$xml_obj->PicUrl;
             $MediaId=$xml_obj->MediaId;
             $jie='<xml>
             <ToUserName><![CDATA['.$from.']]></ToUserName>
             <FromUserName><![CDATA['.$touser.']]></FromUserName>
             <CreateTime>'.$time.'</CreateTime>
             <MsgType><![CDATA[image]]></MsgType>
-            <PicUrl><![CDATA['.$PicUrl.']]></PicUrl>
-            <MsgId>22562547357082207</MsgId>
-            <MediaId><![CDATA['.$MediaId.']]></MediaId>
-            </xml>';
+            <Image>
+              <MediaId><![CDATA['.$MediaId.']]></MediaId>
+            </Image>
+          </xml>';
             echo $jie;
         }
 
