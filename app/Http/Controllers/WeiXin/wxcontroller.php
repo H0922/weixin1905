@@ -77,6 +77,20 @@ class wxcontroller extends Controller
           </xml>';
             echo $jie;
         }
+        //语音
+        if($msg=='voice'){
+            $MediaId=$xml_obj->MediaId;
+            $jie='<xml>
+            <ToUserName><![CDATA['.$from.']]></ToUserName>
+            <FromUserName><![CDATA['.$touser.']]></FromUserName>
+            <CreateTime>'.$time.'</CreateTime>
+            <MsgType><![CDATA[voice]]></MsgType>
+            <Voice>
+              <MediaId><![CDATA['.$MediaId.']]></MediaId>
+            </Voice>
+          </xml>';
+        }
+        echo $jie;
 
     }
 
