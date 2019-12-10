@@ -7,6 +7,22 @@ use Illuminate\Http\Request;
 
 class wxcontroller extends Controller
 {
+    //储存access_token
+    protected $access_token;
+
+    //魔术方法
+    public function __construct()
+    {
+        //给$access_token属性赋值
+        $this->access_token=$this->getAccessToken();
+    }
+    //获取access_token方法
+    public function getAccessToken(){
+        $url ='https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.env('WX_APPID').'&secret='.env('WX_APPSECRET').'';
+        $data_json=file_get_contents($url);
+        $arr=json_decode($data_json,true);
+        return $arr['access_token'];
+    }
 
     //接收微信的推送事件
     public function wxer(){
@@ -15,6 +31,18 @@ class wxcontroller extends Controller
         $xml_str=file_get_contents("php://input");
         $data=date('Y-m-d H:i:s',time()).$xml_str;
         file_put_contents($log_file,$data,FILE_APPEND);
+
+        //获取用户关注信息提示
+        $xml_obj=simplexml_load_string($xml_str);
+        $Event=$xml_obj->Event;
+        // echo $Event;
+        if($Event=='subscribe'){
+            //获取用户的open_id
+            $open_id=$xml_obj->FromUserName;
+            $url='https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->getAccessToken().'&openid='.$open_id.'&lang=zh_CN';
+            $data=file_get_contents($url);
+            file_put_contents('wx_user.log',$data,FILE_APPEND);
+        }
     }
 
          //获取用户的基本信息
