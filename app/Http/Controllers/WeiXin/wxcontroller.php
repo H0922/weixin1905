@@ -4,7 +4,7 @@ namespace App\Http\Controllers\WeiXin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Model\WxUserModel as Mu;
 class wxcontroller extends Controller
 {
     //储存access_token
@@ -32,27 +32,69 @@ class wxcontroller extends Controller
         $data=date('Y-m-d H:i:s',time()).$xml_str;
         file_put_contents($log_file,$data,FILE_APPEND);
 
+
         //获取用户关注信息提示
         $xml_obj=simplexml_load_string($xml_str);
         $Event=$xml_obj->Event;
         // echo $Event;
+        //信息回复
+        $touser=$xml_obj->ToUserName;
+        $from=$xml_obj->FromUserName;
+        $time=time();
+        //公众号关注
         if($Event=='subscribe'){
             //获取用户的open_id
             $open_id=$xml_obj->FromUserName;
+            //获取用户信息
+            $user='https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->getAccessToken().'&openid='.$open_id.'&lang=zh_CN';
+            $user_json=file_get_contents($user);
+            $user_arr=json_decode($user_json,true);
+            $sub=Mu::where('openid','=',$open_id)->first();
+            //判断是否以前关注过
+            if($sub){
+                $name='欢迎您再次回家'.$user_arr['nickname'];
+                $data=[
+                    'sub_time'=>$xml_obj->CreateTime,
+                    'nickname'=>$user_arr['nickname'],
+                    'sex'=>$user_arr['sex'],
+                ];
+                Mu::where('openid','=',$open_id)->update($data);
+                $jie='<xml>
+                <ToUserName><![CDATA['.$from.']]></ToUserName>
+                <FromUserName><![CDATA['.$touser.']]></FromUserName>
+                <CreateTime>'.$time.'</CreateTime>
+                <MsgType><![CDATA[text]]></MsgType>
+                <Content><![CDATA['.$name.']]></Content>
+                </xml>';
+                echo $jie;
+            }else{
+                $name='感谢您的关注'.$user_arr['nickname'];
+                  //第一次关注添加入库
             $data=[
                 'openid'=>$open_id,
                 'sub_time'=>$xml_obj->CreateTime,
+                'nickname'=>$user_arr['nickname'],
+                'sex'=>$user_arr['sex'],
             ];
-            
+              Mu::insertGetId($data);
+             $jie='<xml>
+             <ToUserName><![CDATA['.$from.']]></ToUserName>
+             <FromUserName><![CDATA['.$touser.']]></FromUserName>
+             <CreateTime>'.$time.'</CreateTime>
+             <MsgType><![CDATA[text]]></MsgType>
+             <Content><![CDATA['.$name.']]></Content>
+             </xml>';
+             echo $jie;
+            }
+          
             $url='https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->getAccessToken().'&openid='.$open_id.'&lang=zh_CN';
             $data=file_get_contents($url);
             file_put_contents('wx_user.log',$data,FILE_APPEND);
         }
 
-        //信息回复
-        $touser=$xml_obj->ToUserName;
-        $from=$xml_obj->FromUserName;
-        $time=time();
+        
+
+        
         //信息类型
         $msg=$xml_obj->MsgType;
         //纯文本信息回复
