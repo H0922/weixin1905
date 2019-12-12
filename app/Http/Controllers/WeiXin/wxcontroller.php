@@ -24,15 +24,8 @@ class wxcontroller extends Controller
         return $arr['access_token'];
     }
 
-    //接收微信的推送事件
-    public function wxer(){
-        //将接收的数据记录存到日志文件
-        $log_file="wx.log";
-        $xml_str=file_get_contents("php://input");
-        $data=date('Y-m-d H:i:s',time()).$xml_str;
-        file_put_contents($log_file,$data,FILE_APPEND);
-
-
+    //用户关注
+    public function subuser($xml_str){
         //获取用户关注信息提示zss
         $xml_obj=simplexml_load_string($xml_str);
         $Event=$xml_obj->Event;
@@ -71,7 +64,7 @@ class wxcontroller extends Controller
                 echo $jie;
             }else{
                 $name='感谢您的关注'.$user_arr['nickname'];
-                  //第一次关注添加入库
+                    //第一次关注添加入库
             $data=[
                 'openid'=>$open_id,
                 'sub_time'=>$xml_obj->CreateTime,
@@ -79,23 +72,21 @@ class wxcontroller extends Controller
                 'sex'=>$user_arr['sex'],
                 'headimgurl'=>$user_arr['headimgurl'],
             ];
-              Mu::insertGetId($data);
-             $jie='<xml>
-             <ToUserName><![CDATA['.$from.']]></ToUserName>
-             <FromUserName><![CDATA['.$touser.']]></FromUserName>
-             <CreateTime>'.$time.'</CreateTime>
-             <MsgType><![CDATA[text]]></MsgType>
-             <Content><![CDATA['.$name.']]></Content>
-             </xml>';
-             echo $jie;
+                Mu::insertGetId($data);
+                $jie='<xml>
+                <ToUserName><![CDATA['.$from.']]></ToUserName>
+                <FromUserName><![CDATA['.$touser.']]></FromUserName>
+                <CreateTime>'.$time.'</CreateTime>
+                <MsgType><![CDATA[text]]></MsgType>
+                <Content><![CDATA['.$name.']]></Content>
+                </xml>';
+                echo $jie;
             }
-          
+            
             $url='https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->getAccessToken().'&openid='.$open_id.'&lang=zh_CN';
             $data=file_get_contents($url);
             file_put_contents('wx_user.log',$data,FILE_APPEND);
         }
-
-        
 
         
         //信息类型
@@ -122,9 +113,9 @@ class wxcontroller extends Controller
             <CreateTime>'.$time.'</CreateTime>
             <MsgType><![CDATA[image]]></MsgType>
             <Image>
-              <MediaId><![CDATA['.$MediaId.']]></MediaId>
+                <MediaId><![CDATA['.$MediaId.']]></MediaId>
             </Image>
-          </xml>';
+            </xml>';
             echo $jie;
         }
         //语音
@@ -136,29 +127,39 @@ class wxcontroller extends Controller
             <CreateTime>'.$time.'</CreateTime>
             <MsgType><![CDATA[voice]]></MsgType>
             <Voice>
-              <MediaId><![CDATA['.$MediaId.']]></MediaId>
+                <MediaId><![CDATA['.$MediaId.']]></MediaId>
             </Voice>
-          </xml>';
-          echo $jie;
+            </xml>';
+            echo $jie;
         }
-        //视频
-        // if($msg=='video'){
-        //     $MediaId=$xml_obj->MediaId;
-        //     $title='公众号内测....haung';
-        //     $desc='视频发布于'.date('Y-m-d H:i:s',time()).'huang';
-        //     $jie='<xml>
-        //     <ToUserName><![CDATA['.$from.']]></ToUserName>
-        //     <FromUserName><![CDATA['.$touser.']]></FromUserName>
-        //     <CreateTime>'.$time.'</CreateTime>
-        //     <MsgType><![CDATA[video]]></MsgType>
-        //     <Video>
-        //     <MediaId><![CDATA['.$MediaId.']]></MediaId>
-        //       <Title><![CDATA['.$title.']]></Title>
-        //       <Description><![CDATA['.$desc.']]></Description>
-        //     </Video>
-        //   </xml>';
-        //   return $jie;
-        // }
+        //  视频
+        if($msg=='video'){
+            $MediaId=$xml_obj->MediaId;
+            $title='公众号内测....haung';
+            $desc='视频发布于'.date('Y-m-d H:i:s',time()).'huang';
+            $jie='<xml>
+            <ToUserName><![CDATA['.$from.']]></ToUserName>
+            <FromUserName><![CDATA['.$touser.']]></FromUserName>
+            <CreateTime>'.$time.'</CreateTime>
+            <MsgType><![CDATA[video]]></MsgType>
+            <Video>
+            <MediaId><![CDATA['.$MediaId.']]></MediaId>
+                <Title><![CDATA['.$title.']]></Title>
+                <Description><![CDATA['.$desc.']]></Description>
+            </Video>
+            </xml>';
+            return $jie;
+        }
+    }
+    //接收微信的推送事件
+    public function wxer(){
+        //将接收的数据记录存到日志文件
+        $log_file="wx.log";
+        $xml_str=file_get_contents("php://input");
+        $data=date('Y-m-d H:i:s',time()).$xml_str;
+        file_put_contents($log_file,$data,FILE_APPEND);
+        //用户关注和信息回复
+        $this->subuser($xml_str);
         
 
     }
