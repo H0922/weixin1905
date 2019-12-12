@@ -33,7 +33,7 @@ class wxcontroller extends Controller
         file_put_contents($log_file,$data,FILE_APPEND);
 
 
-        //获取用户关注信息提示
+        //获取用户关注信息提示zss
         $xml_obj=simplexml_load_string($xml_str);
         $Event=$xml_obj->Event;
         // echo $Event;
@@ -49,6 +49,7 @@ class wxcontroller extends Controller
             $user='https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->getAccessToken().'&openid='.$open_id.'&lang=zh_CN';
             $user_json=file_get_contents($user);
             $user_arr=json_decode($user_json,true);
+            // dd($user_arr);
             $sub=Mu::where('openid','=',$open_id)->first();
             //判断是否以前关注过
             if($sub){
@@ -57,6 +58,7 @@ class wxcontroller extends Controller
                     'sub_time'=>$xml_obj->CreateTime,
                     'nickname'=>$user_arr['nickname'],
                     'sex'=>$user_arr['sex'],
+                    'headimgurl'=>$user_arr['headimgurl'],
                 ];
                 Mu::where('openid','=',$open_id)->update($data);
                 $jie='<xml>
@@ -75,6 +77,7 @@ class wxcontroller extends Controller
                 'sub_time'=>$xml_obj->CreateTime,
                 'nickname'=>$user_arr['nickname'],
                 'sex'=>$user_arr['sex'],
+                'headimgurl'=>$user_arr['headimgurl'],
             ];
               Mu::insertGetId($data);
              $jie='<xml>
