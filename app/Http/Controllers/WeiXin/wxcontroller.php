@@ -5,6 +5,7 @@ namespace App\Http\Controllers\WeiXin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Model\WxUserModel as Mu;
+use Illuminate\Support\Facades\Redis;
 class wxcontroller extends Controller
 {
     //储存access_token
@@ -18,14 +19,69 @@ class wxcontroller extends Controller
     }
     //获取access_token方法
     public function getAccessToken(){
+        $key="wx_access_token";
+        $access_token=Redis::get($key);
+        if($access_token){
+            return $access_token;
+        }
         $url ='https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.env('WX_APPID').'&secret='.env('WX_APPSECRET').'';
         $data_json=file_get_contents($url);
         $arr=json_decode($data_json,true);
+        Redis::set($key,$arr['access_token']);
+        Redis::expire($key,3600);
         return $arr['access_token'];
     }
 
-    //用户关注
-    public function subuser($xml_str){
+ 
+    //接收微信的推送事件
+    public function wxer(){
+        //将接收的数据记录存到日志文件
+        $log_file="wx.log";
+        $xml_str=file_get_contents("php://input");
+        $data=date('Y-m-d H:i:s',time()).$xml_str;
+        file_put_contents($log_file,$data,FILE_APPEND); 
+
+
+        //用户关注信息回复
+        $this->subuser($xml_str);
+
+        //转换接收回来的数据
+        $xml_obj=simplexml_load_string($xml_str);
+        $img=$xml_obj->MsgType;
+       
+
+
+        //图片下载到本地
+        if($img=='image'){
+            $MediaId=$xml_obj->MediaId;
+            $open_id=$xml_obj->FromUserName;
+            $this->img($MediaId,$open_id);
+        }    
+
+    }
+        //图片下载到本地
+        public function img($MediaId,$open_id){
+            // echo $MediaId;
+            $url='https://api.weixin.qq.com/cgi-bin/media/get?access_token='.$this->access_token.'&media_id='.$MediaId.'';
+            $data=file_get_contents($url);
+            $user=$this->getUserInfo($open_id);
+            $op=$MediaId.'.jpg';
+            file_put_contents($op,$data);
+
+
+            //创建文件夹
+            // $opfile='images/'.$user['nickname'].'/'.date('Y-m-d');
+            // $dir = iconv("UTF-8", "GBK", "$opfile");
+            //  if (!file_exists($dir)){
+            //         mkdir ($dir,0777,true);
+            //         echo '创建文件夹bookcover成功';
+            //     } else {
+            //            echo '需创建的文件夹bookcover已经存在';
+            //     }
+        }
+
+       //用户关注
+       public function subuser($xml_str){
         //获取用户关注信息提示zss
         $xml_obj=simplexml_load_string($xml_str);
         $Event=$xml_obj->Event;
@@ -103,21 +159,21 @@ class wxcontroller extends Controller
             </xml>';
             echo $jie;
         }
-        //图片信息回复
-        if($msg=='image'){
-            // $PicUrl=$xml_obj->PicUrl;
-            $MediaId=$xml_obj->MediaId;
-            $jie='<xml>
-            <ToUserName><![CDATA['.$from.']]></ToUserName>
-            <FromUserName><![CDATA['.$touser.']]></FromUserName>
-            <CreateTime>'.$time.'</CreateTime>
-            <MsgType><![CDATA[image]]></MsgType>
-            <Image>
-                <MediaId><![CDATA['.$MediaId.']]></MediaId>
-            </Image>
-            </xml>';
-            echo $jie;
-        }
+        // //图片信息回复
+        // if($msg=='image'){
+        //     // $PicUrl=$xml_obj->PicUrl;
+        //     $MediaId=$xml_obj->MediaId;
+        //     $jie='<xml>
+        //     <ToUserName><![CDATA['.$from.']]></ToUserName>
+        //     <FromUserName><![CDATA['.$touser.']]></FromUserName>
+        //     <CreateTime>'.$time.'</CreateTime>
+        //     <MsgType><![CDATA[image]]></MsgType>
+        //     <Image>
+        //         <MediaId><![CDATA['.$MediaId.']]></MediaId>
+        //     </Image>
+        //     </xml>';
+        //     echo $jie;
+        // }
         //语音
         if($msg=='voice'){
             $MediaId=$xml_obj->MediaId;
@@ -151,27 +207,14 @@ class wxcontroller extends Controller
             return $jie;
         }
     }
-    //接收微信的推送事件
-    public function wxer(){
-        //将接收的数据记录存到日志文件
-        $log_file="wx.log";
-        $xml_str=file_get_contents("php://input");
-        $data=date('Y-m-d H:i:s',time()).$xml_str;
-        file_put_contents($log_file,$data,FILE_APPEND);
-        //用户关注和信息回复
-        $this->subuser($xml_str);
-        
-
-    }
 
          //获取用户的基本信息
-         public function getUserInfo($access_token,$open_id){
-
-            $url='https://api.weixin.qq.com/cgi-bin/user/info?access_token=28_x2UxX7g34nGNqsOy_D1GPtBFWFYbocxpZjdTnu7RZ-hSutzSn6SWe-vvqAjeaGF3SbUQKU5arur2bA0E0zrwMosa8LBocEmFjSt6wKkzzTihtkVNZkoUikLwSg2hBKc4XkOo4uL4FCpbzT6oGSCjADARDN&openid=oQj6Rv3FhT85S9oSgg7V5uImOGRQ&lang=zh_CN';
-            // //发送网络请求   发送的get的请求
-            // $json_str=file_get_contents($url);
-            // $log_file='wx_user.log';
-            // file_put_contents($log_file,$json_str,FILE_APPEND);
+         public function getUserInfo($open_id){
+            $url='https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->getAccessToken().'&openid='.$open_id.'&lang=zh_CN';
+            //发送网络请求   发送的get的请求
+            $json_str=file_get_contents($url);
+            $data= json_decode($json_str,true);
+            return $data;
     
         }
 

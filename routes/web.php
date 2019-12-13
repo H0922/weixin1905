@@ -15,5 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('info', function () {
+    phpinfo();
+});
+
 Route::get('wx','WeiXin\wxcontroller@wx');
 Route::post('wx','WeiXin\wxcontroller@wxer');
