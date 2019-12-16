@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Model\WxUserModel as Mu;
 use Illuminate\Support\Facades\Redis;
 use GuzzleHttp\Client;
+use App\Model\WxText as Text;
+use App\Model\WxImg as Img;
+use App\Model\WxVoice ;
 class wxcontroller extends Controller
 {
     //储存access_token
@@ -40,15 +43,9 @@ class wxcontroller extends Controller
         $xml_str=file_get_contents("php://input");
         $data=date('Y-m-d H:i:s',time()).$xml_str;
         file_put_contents($log_file,$data,FILE_APPEND);
-         //转换接收回来的数据 
-        $xml_obj=simplexml_load_string($xml_str);
-        $smg_type=$xml_obj->MsgType;
-        $MediaId=$xml_obj->MediaId;
-        $open_id=$xml_obj->FromUserName;
-        $touser=$xml_obj->ToUserName;
         //用户关注信息回复
         $this->subuser($xml_str);
-        $this->UserSub($MediaId,$smg_type,$open_id,$touser);
+        $this->UserSub($xml_str);
     }
     //获取素材
     public function getMedia($media_id,$smg_type){
@@ -73,9 +70,9 @@ class wxcontroller extends Controller
                     $file_name = date('YmdHis').mt_rand(1111,9999).$extension;
                     $save_path = $save_path.'voice/'.$file_name;
                 }
-                file_put_contents($save_path,$file_con);
-                echo '创建成功';
                 // dd($save_path);
+                file_put_contents($save_path,$file_con);
+                return $save_path;
 
             }
        //用户关注
@@ -142,14 +139,48 @@ class wxcontroller extends Controller
             file_put_contents('wx_user.log',$data,FILE_APPEND);
         }
 
-         }
-    //用户信息回复并保存
-    public function UserSub($MediaId,$msg,$from,$touser){
+    }
+         //用户信息回复并保存
+    public function UserSub($xml_str){
+        $xml_obj=simplexml_load_string($xml_str);
+        $msg=$xml_obj->MsgType;
+        $MediaId=$xml_obj->MediaId;
+        $from=$xml_obj->FromUserName;
+        $touser=$xml_obj->ToUserName;
         $time=time();
+        $user_id=Mu::where('openid','=',$from)->value('user_id');
+         //纯文本信息回复
+         if($msg=='text'){
+            $con=$xml_obj->Content;
+            $c='感谢您的留言♥';
+            $data=[
+                'user_id'=>$user_id,
+                'text_desc'=>$con,
+                'time'=>$time,
+            ];
+            $res=Text::insert($data);
+            if($res){
+                $jie='<xml>
+                <ToUserName><![CDATA['.$from.']]></ToUserName>
+                <FromUserName><![CDATA['.$touser.']]></FromUserName>
+                <CreateTime>'.$time.'</CreateTime>
+                <MsgType><![CDATA[text]]></MsgType>
+                <Content><![CDATA['.$c.']]></Content>
+                </xml>';
+                echo $jie;
+            } 
+            }
         //图片信息回复
         if($msg=='image'){
-            $this->getMedia($MediaId,$msg);
-            $jie='<xml>
+            $img=$this->getMedia($MediaId,$msg);
+            $data=[
+                'user_id'=>$user_id,
+                'img_url'=>$img,
+                'time'=>$time,
+            ];
+            $res=Img::insert($data);
+            if($res){
+                $jie='<xml>
             <ToUserName><![CDATA['.$from.']]></ToUserName>
             <FromUserName><![CDATA['.$touser.']]></FromUserName>
             <CreateTime>'.$time.'</CreateTime>
@@ -159,22 +190,19 @@ class wxcontroller extends Controller
             </Image>
             </xml>';
             echo $jie;
-        }
-         //纯文本信息回复
-         if($msg=='text'){
-            $con=date('Y-m-d H:i:s',time());
-                $jie='<xml>
-                <ToUserName><![CDATA['.$from.']]></ToUserName>
-                <FromUserName><![CDATA['.$touser.']]></FromUserName>
-                <CreateTime>'.$time.'</CreateTime>
-                <MsgType><![CDATA[text]]></MsgType>
-                <Content><![CDATA['.$con.']]></Content>
-                </xml>';
-                echo $jie;
             }
+            
+        }
+        
                //语音
         if($msg=='voice'){
-            $this->getMedia($MediaId,$msg);
+            $voice=$this->getMedia($MediaId,$msg);
+            $data=[
+                'user_id'=>$user_id,
+                'voice_url'=>$voice,
+                'time'=>$time,
+            ];
+            $res=WxVoice::insert($data);
             $jie='<xml>
             <ToUserName><![CDATA['.$from.']]></ToUserName>
             <FromUserName><![CDATA['.$touser.']]></FromUserName>
