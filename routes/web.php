@@ -23,3 +23,4 @@ Route::get('wx','WeiXin\wxcontroller@wx');
 Route::post('wx','WeiXin\wxcontroller@wxer');
 Route::get('wx/menu','WeiXin\wxcontroller@menu');
 
+
