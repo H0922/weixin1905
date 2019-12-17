@@ -11,6 +11,7 @@ use App\Model\WxText as Text;
 use App\Model\WxImg as Img;
 use App\Model\WxVoice ;
 
+use function GuzzleHttp\json_decode;
 use function GuzzleHttp\json_encode;
 
 class wxcontroller extends Controller
@@ -222,13 +223,22 @@ class wxcontroller extends Controller
             if ($xml_obj->Event=='CLICK') {
                 //判断并且触发
                 if ($xml_obj->EventKey=='tianqi') {
-                    $c=date('Y-m-d H:i:s').'晴天';
+                    $url='https://free-api.heweather.net/s6/weather/now?location=changping,beijing&key=2d7e254248224efea1890b807654531f';
+                    $data=file_get_contents($url);
+                    $arr=json_decode($data,true);
+                    $loc='您所在的城市是'.$arr['HeWeather6'][0]['basic']['parent_city'].'-'.$arr['HeWeather6'][0]['basic']['location'];
+                    $cond_text='天气情况->'.$arr['HeWeather6'][0]['now']['cond_txt'];
+                    $tmp='实时温度->'.$arr['HeWeather6'][0]['now']['tmp'];
+                    $fen='风向->'.$arr['HeWeather6'][0]['now']['wind_dir'];
+                    $li='风力->'.$arr['HeWeather6'][0]['now']['wind_sc'].'级';
+                    $time='实时时间'.date('Y-m-d H:i:s');
+                    $b=$time.'/n'.$loc.'/n'.$cond_text.'/n'.$tmp.'/n'.$fen.'/n'.$li;
                     $a='<xml>
 <ToUserName><![CDATA['.$from.']]></ToUserName>
 <FromUserName><![CDATA['.$touser.']]></FromUserName>
 <CreateTime>'.$time.'</CreateTime>
 <MsgType><![CDATA[text]]></MsgType>
-<Content><![CDATA['.$c.']]></Content>
+<Content><![CDATA['.$b.']]></Content>
 </xml>';
                     echo $a;
                 }
