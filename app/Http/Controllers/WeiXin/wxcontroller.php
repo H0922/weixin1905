@@ -10,6 +10,9 @@ use GuzzleHttp\Client;
 use App\Model\WxText as Text;
 use App\Model\WxImg as Img;
 use App\Model\WxVoice ;
+
+use function GuzzleHttp\json_encode;
+
 class wxcontroller extends Controller
 {
     //储存access_token
@@ -214,6 +217,22 @@ class wxcontroller extends Controller
             </xml>';
             echo $jie;
         }
+   //获取天气
+            
+            if ($xml_obj->Event=='CLICK') {
+                //判断并且触发
+                if ($xml_obj->EventKey=='tianqi') {
+                    $c=date('Y-m-d H:i:s').'晴天';
+                    $a='<xml>
+<ToUserName><![CDATA['.$from.']]></ToUserName>
+<FromUserName><![CDATA['.$touser.']]></FromUserName>
+<CreateTime>'.$time.'</CreateTime>
+<MsgType><![CDATA[text]]></MsgType>
+<Content><![CDATA['.$c.']]></Content>
+</xml>';
+                    echo $a;
+                }
+            }
          //  视频
          if($msg=='video'){
             $title='公众号内测....haung';
@@ -231,6 +250,8 @@ class wxcontroller extends Controller
             </xml>';
             echo $jie;
         }
+
+
     }
     //获取用户的基本信息
     public function getUserInfo($open_id){
@@ -261,6 +282,50 @@ class wxcontroller extends Controller
            die('not ok');
         }
     }
+
+    //自定义菜单
+    public  function menu(){
+        $url='https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->access_token;
+        $menu=[
+            'button'=>[
+                [
+                    'type'=>'click',
+                    'name'=>'别点我',
+                    'key'=>'huangshaobo'
+                ],
+                [
+                    'name'=>'这个可以点',
+                    'sub_button'=>[
+                        [
+                        'type'=>'view',
+                        'name'=>'小宝贝',
+                        'url'=>"http://kphbeijing.m.chenzhongtech.com/s/sLy9cSs1"
+                    ],
+                    [
+                        'type'=>'view',
+                        'name'=>'作者抖音',
+                        'url'=>"https://v.douyin.com/4BS275/"
+                    ],
+                    [
+                        'type'=>'click',
+                        'name'=>'获取天气',
+                        'key'=>'tianqi'
+                    ]
+                    ]
+                ]
+            ]
+        ];
+        $json_menu=json_encode($menu,JSON_UNESCAPED_UNICODE);
+        dump($json_menu);
+        $client = new Client();
+        $res= $client->request('POST',$url,[
+            'body'=>$json_menu
+        ]);
+       echo $res->getBody();
+    }
+
+
+
 }
 
 
