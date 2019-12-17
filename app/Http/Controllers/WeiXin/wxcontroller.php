@@ -232,16 +232,13 @@ class wxcontroller extends Controller
                     $fen='风向->'.$arr['HeWeather6'][0]['now']['wind_dir'];
                     $li='风力->'.$arr['HeWeather6'][0]['now']['wind_sc'].'级';
                     $time='实时时间'.date('Y-m-d H:i:s');
-                    // $b=$time.'\n'.$loc.'\n'.$cond_text.'/n'.$tmp.'/n'.$fen.'/n'.$li;
+                    $b=$time."\n".$loc."\n".$cond_text."\n".$tmp."\n".$fen."\n".$li;
                     $a='<xml>
 <ToUserName><![CDATA['.$from.']]></ToUserName>
 <FromUserName><![CDATA['.$touser.']]></FromUserName>
 <CreateTime>'.$time.'</CreateTime>
 <MsgType><![CDATA[text]]></MsgType>
-<Content>
-    <![CDATA['.$time.']]>
-    <![CDATA['.$loc.']]>
-</Content>
+<Content><![CDATA['.$b.']]></Content>
 </xml>';
                     echo $a;
                 }
