@@ -17,9 +17,11 @@ class VoteConteller extends Controller
        if(empty($data)){
            return '请您在微信内打开此链接';
        }
+       dump($data);
         $code=$data['code'];
        //获取access_token
        $token=$this->AccessToken($code);
+       dd($token);
        //获取用户信息
        $access_tokrn=$token['access_token'];
        $openid=$token['openid'];
@@ -33,16 +35,11 @@ class VoteConteller extends Controller
            $key='s:vote:lisi';
            Redis::Sadd($key,$openid);
            $number=Redis::Smembers($key);
-           echo "投票成功，投票总人数".$number;
+           echo "投票成功，投票总人数";
+           dump($number);
            $total=Redis::Scard($key);
            dump($total);
         }
-
-
-
-
-
-
         
    //获取Token
    public function AccessToken($code){
