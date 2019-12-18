@@ -296,6 +296,7 @@ class wxcontroller extends Controller
     public  function menu(){
         $urll='http://www.bianaoao.top/vote';
         $ewd_url=urlencode($urll);
+        //dd('https://open.weixin.qq.com/connect/oauth2/authorize?appid='.env('WX_APPID').'&redirect_uri='.$ewd_url.'&response_type=code&scope=snsapi_userinfo&state=1905wx#wechat_redirect');
         $url='https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->access_token;
         $menu=[
             'button'=>[
