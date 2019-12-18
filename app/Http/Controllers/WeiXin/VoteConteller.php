@@ -35,7 +35,8 @@ class VoteConteller extends Controller
            $key='s:vote:lisi';
            Redis::Sadd($key,$openid);
            $number=Redis::Smembers($key);
-           echo "投票成功，投票总人数".$number;
+           echo "投票成功，投票总人数";
+           dump($number);
            $total=Redis::Scard($key);
            dump($total);
         }
