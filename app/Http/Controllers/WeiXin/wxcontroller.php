@@ -294,8 +294,6 @@ class wxcontroller extends Controller
 
     //自定义菜单
     public  function menu(){
-      
-
         $urll='http://www.bianaoao.top/vote';
         $ewd_url=urlencode($urll);
         $url='https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->access_token;
