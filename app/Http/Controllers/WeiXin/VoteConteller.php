@@ -32,7 +32,7 @@ class VoteConteller extends Controller
            $openid=$user['openid'];
            $key='ss:vote:lisi';
            if(Redis::zrank($key,$openid)){
-                return '您已经投过票了';
+               echo '您已经投过票了'; die;
            }else{
             Redis::Zadd($key,time(),$openid);
            }
