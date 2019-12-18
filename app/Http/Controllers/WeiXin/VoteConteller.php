@@ -20,12 +20,12 @@ class VoteConteller extends Controller
         $code=$data['code'];
        //获取access_token
        $token=$this->AccessToken($code);
-       dump($token);
+    //    dump($token);
        //获取用户信息
        $access_tokrn=$token['access_token'];
        $openid=$token['openid'];
        $user=$this->Userxi($access_tokrn,$openid);
-       dump($user);
+    //    dump($user);
        //展示
        $this->list($user);
    }
@@ -35,10 +35,10 @@ class VoteConteller extends Controller
            $key='s:vote:lisi';
            Redis::Sadd($key,$openid);
            $number=Redis::Smembers($key);
-           echo "投票成功，投票总人数";
-           dump($number);
+        //    dump($number);
            $total=Redis::Scard($key);
-           dump($total);
+           echo "投票成功，投票总人数".$total;
+        //    dump($total);
         }
         
    //获取Token
