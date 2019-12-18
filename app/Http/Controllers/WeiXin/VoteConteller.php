@@ -29,10 +29,21 @@ class VoteConteller extends Controller
    }
          //展示
         public function list($user){
-            dump($user);
-            $number=Redis::incr('vote');
-            echo "投票成功，当前票数".$number;
+           $openid=$user['openid'];
+           $key='s:vote:lisi';
+           Redis::Sadd($key,$openid);
+           $number=Redis::Smembers($key);
+           echo "投票成功，投票总人数".$number;
+           $total=Redis::Scard($key);
+           dump($total);
         }
+
+
+
+
+
+
+        
    //获取Token
    public function AccessToken($code){
         $url='https://api.weixin.qq.com/sns/oauth2/access_token?appid='.env('WX_APPID').'&secret='.env('WX_APPSECRET').'&code='.$code.'&grant_type=authorization_code';
