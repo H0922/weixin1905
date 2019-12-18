@@ -20,25 +20,28 @@ class VoteConteller extends Controller
         $code=$data['code'];
        //获取access_token
        $token=$this->AccessToken($code);
-    //    dump($token);
        //获取用户信息
        $access_tokrn=$token['access_token'];
        $openid=$token['openid'];
        $user=$this->Userxi($access_tokrn,$openid);
-    //    dump($user);
        //展示
        $this->list($user);
    }
          //展示
         public function list($user){
            $openid=$user['openid'];
-           $key='s:vote:lisi';
-           Redis::Sadd($key,$openid);
-           $number=Redis::Smembers($key);
-        //    dump($number);
-           $total=Redis::Scard($key);
+           $key='ss:vote:lisi';
+           if(Redis::zrank($key,$openid)){
+                return '您已经投过票了';
+           }else{
+            Redis::Zadd($key,time(),$openid);
+           }
+           $number=Redis::zRange($key,0,-1,true);
+           $total=Redis::zCard($key);
            echo "投票成功，投票总人数".$total;
-        //    dump($total);
+           foreach($number as $k=>$v){
+                echo "用户：".$k.'投票时间:'.date('Y-m-d H:i:s',$v);echo '</br>';
+           }
         }
         
    //获取Token
