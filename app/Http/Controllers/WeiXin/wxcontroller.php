@@ -218,8 +218,7 @@ class wxcontroller extends Controller
             </xml>';
             echo $jie;
         }
-   //获取天气
-            
+            //获取天气
             if ($xml_obj->Event=='CLICK') {
                 //判断并且触发
                 if ($xml_obj->EventKey=='tianqi') {
@@ -234,12 +233,12 @@ class wxcontroller extends Controller
                     $time='实时时间'.date('Y-m-d H:i:s');
                     $b=$time."\n".$loc."\n".$cond_text."\n".$tmp."\n".$fen."\n".$li;
                     $a='<xml>
-<ToUserName><![CDATA['.$from.']]></ToUserName>
-<FromUserName><![CDATA['.$touser.']]></FromUserName>
-<CreateTime>'.$time.'</CreateTime>
-<MsgType><![CDATA[text]]></MsgType>
-<Content><![CDATA['.$b.']]></Content>
-</xml>';
+                        <ToUserName><![CDATA['.$from.']]></ToUserName>
+                        <FromUserName><![CDATA['.$touser.']]></FromUserName>
+                        <CreateTime>'.$time.'</CreateTime>
+                        <MsgType><![CDATA[text]]></MsgType>
+                        <Content><![CDATA['.$b.']]></Content>
+                        </xml>';
                     echo $a;
                 }
             }
@@ -262,7 +261,7 @@ class wxcontroller extends Controller
         }
 
 
-    }
+}
     //获取用户的基本信息
     public function getUserInfo($open_id){
             $url='https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->getAccessToken().'&openid='.$open_id.'&lang=zh_CN';
@@ -295,6 +294,10 @@ class wxcontroller extends Controller
 
     //自定义菜单
     public  function menu(){
+      
+
+        $urll='http://www.bianaoao.top/vote';
+        $ewd_url=urlencode($urll);
         $url='https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->access_token;
         $menu=[
             'button'=>[
@@ -313,8 +316,8 @@ class wxcontroller extends Controller
                     ],
                     [
                         'type'=>'view',
-                        'name'=>'作者抖音',
-                        'url'=>"https://v.douyin.com/4BS275/"
+                        'name'=>'投票业务',
+                        'url'=>'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.env('WX_APPID').'&redirect_uri='.$ewd_url.'&response_type=code&scope=snsapi_userinfo&state=1905wx#wechat_redirect'
                     ],
                     [
                         'type'=>'click',
