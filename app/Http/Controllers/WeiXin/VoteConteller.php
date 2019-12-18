@@ -13,6 +13,9 @@ class VoteConteller extends Controller
     
    public function index(){
        $data=$_GET;
+       if(empty($data)){
+           return '请您在微信内打开此链接';
+       }
         $code=$data['code'];
        //获取access_token
        $token=$this->AccessToken($code);
@@ -20,7 +23,7 @@ class VoteConteller extends Controller
        $access_tokrn=$token['access_token'];
        $openid=$token['openid'];
        $user=$this->Userxi($access_tokrn,$openid);
-       dd($user);
+       
    }
 
    //获取Token
