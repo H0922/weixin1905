@@ -20,11 +20,12 @@ class VoteConteller extends Controller
         $code=$data['code'];
        //获取access_token
        $token=$this->AccessToken($code);
-    //    dump($token);
+       dump($token);
        //获取用户信息
        $access_tokrn=$token['access_token'];
        $openid=$token['openid'];
        $user=$this->Userxi($access_tokrn,$openid);
+       dump($user);
        //展示
        $this->list($user);
    }
