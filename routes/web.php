@@ -22,5 +22,7 @@ Route::get('info', function () {
 Route::get('wx','WeiXin\wxcontroller@wx');
 Route::post('wx','WeiXin\wxcontroller@wxer');
 Route::get('wx/menu','WeiXin\wxcontroller@menu');
+Route::get('vote','WeiXin\VoteConteller@index');
+
 
 
