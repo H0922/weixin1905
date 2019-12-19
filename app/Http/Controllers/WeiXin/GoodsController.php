@@ -23,7 +23,6 @@ class GoodsController extends Controller
        $access_tokrn=$token['access_token'];
        $openid=$token['openid'];
        $user=$this->Userxi($access_tokrn,$openid);
-       dump($user);
        $this->index();
     }
     public function AccessToken($code){
