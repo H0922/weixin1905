@@ -4,7 +4,7 @@ namespace App\Http\Controllers\WeiXin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Model\WxUserModel as User;
 class GoodsController extends Controller
 {
     //接收信息
@@ -23,7 +23,8 @@ class GoodsController extends Controller
        $access_tokrn=$token['access_token'];
        $openid=$token['openid'];
        $user=$this->Userxi($access_tokrn,$openid);
-       return view('weixin.goods.index');
+       $link=User::where('openid','=',$user['openid'])->first();    
+       return view('weixin.goods.index',['link'=>$link]);
     //    $this->index();
     //    return view('weixin.goods.ce');
     }

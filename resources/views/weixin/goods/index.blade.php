@@ -41,8 +41,8 @@
 	<div class="side-nav-panel-right">
 		<ul id="slide-out-right" class="side-nav side-nav-panel collapsible">
 			<li class="profil">
-				<img src="weixin/img/profile.jpg" alt="">
-				<h2>John Doe</h2>
+				<img src="{{$link->headimgurl}}" alt="">
+				<h2>{{$link->nickname}}</h2>
 			</li>
 			<li><a href="setting.html"><i class="fa fa-cog"></i>Settings</a></li>
 			<li><a href="about-us.html"><i class="fa fa-user"></i>About Us</a></li>
