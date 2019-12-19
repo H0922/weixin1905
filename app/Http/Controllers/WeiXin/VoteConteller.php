@@ -32,15 +32,18 @@ class VoteConteller extends Controller
            $openid=$user['openid'];
            $key='ss:vote:lisi';
            if(Redis::zrank($key,$openid)){
-               echo '您已经投过票了'; die;
+               echo '您已经投过票了'; 
            }else{
             Redis::Zadd($key,time(),$openid);
            }
            $number=Redis::zRange($key,0,-1,true);
            $total=Redis::zCard($key);
-           echo "投票成功，投票总人数".$total;
+           echo "投票成功，投票总人数".$total.'</br>';
            foreach($number as $k=>$v){
-                echo "用户：".$k.'投票时间:'.date('Y-m-d H:i:s',$v);echo '</br>';
+              //  echo "用户：".$k.'投票时间:'.date('Y-m-d H:i:s',$v);echo '</br>';
+              $u_k = 'h:u:'.$k;
+              $u = Redis::hgetAll($u_k);
+              echo ' <img src="'.$u['headimgurl'].'"> ';
            }
         }
         
