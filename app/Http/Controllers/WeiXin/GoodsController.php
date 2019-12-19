@@ -23,8 +23,9 @@ class GoodsController extends Controller
        $access_tokrn=$token['access_token'];
        $openid=$token['openid'];
        $user=$this->Userxi($access_tokrn,$openid);
-       $this->index();
-       return view('weixin.goods.ce');
+       return view('weixin.goods.index');
+    //    $this->index();
+    //    return view('weixin.goods.ce');
     }
     public function AccessToken($code){
         $url='https://api.weixin.qq.com/sns/oauth2/access_token?appid='.env('WX_APPID').'&secret='.env('WX_APPSECRET').'&code='.$code.'&grant_type=authorization_code';

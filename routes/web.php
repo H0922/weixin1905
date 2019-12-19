@@ -27,7 +27,7 @@ Route::get('key','WeiXin\VoteConteller@delkey');
 //商城路由
 Route::get('goods','WeiXin\GoodsController@index');
 Route::get('goodslist','WeiXin\GoodsController@goodslist');
-Route::get('goods/goods','WeiXin\GoodsController@goods');
+Route::get('goodsgoods','WeiXin\GoodsController@goods');
 
 
 
