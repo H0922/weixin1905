@@ -308,11 +308,6 @@ class wxcontroller extends Controller
                 [
                     'name'=>'这个可以点',
                     'sub_button'=>[
-                        [
-                        'type'=>'view',
-                        'name'=>'小',
-                        'url'=>""
-                    ],
                     [
                         'type'=>'view',
                         'name'=>'投票业务',
