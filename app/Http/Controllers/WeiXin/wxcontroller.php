@@ -296,14 +296,16 @@ class wxcontroller extends Controller
     public  function menu(){
         $urll='http://www.bianaoao.top/vote';
         $ewd_url=urlencode($urll);
-        //dd('https://open.weixin.qq.com/connect/oauth2/authorize?appid='.env('WX_APPID').'&redirect_uri='.$ewd_url.'&response_type=code&scope=snsapi_userinfo&state=1905wx#wechat_redirect');
+        $goods='http://www.bianaoao.top/goods/goods';
+        $goods_url=urlencode($goods);
+
         $url='https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->access_token;
         $menu=[
             'button'=>[
                 [
-                    'type'=>'click',
-                    'name'=>'别点我',
-                    'key'=>'huangshaobo'
+                    'type'=>'view',
+                    'name'=>'商城',
+                    'url'=>'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.env('WX_APPID').'&redirect_uri='.$goods_url.'&response_type=code&scope=snsapi_userinfo&state=1905goods#wechat_redirect'
                 ],
                 [
                     'name'=>'这个可以点',
