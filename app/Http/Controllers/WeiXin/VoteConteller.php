@@ -30,6 +30,9 @@ class VoteConteller extends Controller
          //展示
         public function list($user){
            $openid=$user['openid'];
+            //保存用户信息
+            $userinfo_key = 'h:u:'.$user['openid'];
+            Redis::hMset($userinfo_key,$user);
            $key='ss:vote:lisi';
            if(Redis::zrank($key,$openid)){
                echo '您已经投过票了'; 
@@ -40,9 +43,9 @@ class VoteConteller extends Controller
            $total=Redis::zCard($key);
            echo "投票成功，投票总人数".$total.'</br>';
            foreach($number as $k=>$v){
-              //  echo "用户：".$k.'投票时间:'.date('Y-m-d H:i:s',$v);echo '</br>';
               $u_k = 'h:u:'.$k;
               $u = Redis::hgetAll($u_k);
+              dump($u);
               echo ' <img src="'.$u['headimgurl'].'"> ';
            }
         }
