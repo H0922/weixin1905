@@ -48,11 +48,12 @@ class VoteConteller extends Controller
            $number=Redis::zRange($key,0,-1,true);
            $total=Redis::zCard($key);
            echo "投票成功，投票总人数".$total.'</br>';
-           foreach($number as $k=>$v){
-              $u_k = 'h:u:'.$k;
-              $u = Redis::hgetAll($u_k);
-              echo ' <img src="'.$u['headimgurl'].'"> ';
-           }
+           return view('wexin.vote.index',['number'=>$number]);
+        //    foreach($number as $k=>$v){
+        //       $u_k = 'h:u:'.$k;
+        //       $u = Redis::hgetAll($u_k);
+        //       echo ' <img src="'.$u['headimgurl'].'"> ';
+        //    }
         }
         
    //获取Token
