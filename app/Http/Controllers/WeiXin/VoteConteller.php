@@ -51,7 +51,6 @@ class VoteConteller extends Controller
            foreach($number as $k=>$v){
               $u_k = 'h:u:'.$k;
               $u = Redis::hgetAll($u_k);
-              dump($u);
               echo ' <img src="'.$u['headimgurl'].'"> ';
            }
         }
