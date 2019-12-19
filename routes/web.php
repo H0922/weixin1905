@@ -23,6 +23,6 @@ Route::get('wx','WeiXin\wxcontroller@wx');
 Route::post('wx','WeiXin\wxcontroller@wxer');
 Route::get('wx/menu','WeiXin\wxcontroller@menu');
 Route::get('vote','WeiXin\VoteConteller@index');
-
+Route::get('key','WeiXin\VoteConteller@delkey');
 
 
