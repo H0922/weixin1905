@@ -310,8 +310,8 @@ class wxcontroller extends Controller
                     'sub_button'=>[
                         [
                         'type'=>'view',
-                        'name'=>'小宝贝',
-                        'url'=>"http://kphbeijing.m.chenzhongtech.com/s/sLy9cSs1"
+                        'name'=>'小',
+                        'url'=>""
                     ],
                     [
                         'type'=>'view',
