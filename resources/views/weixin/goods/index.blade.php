@@ -207,29 +207,34 @@
 				<div class="divider-top"></div>
 				<div class="divider-bottom"></div>
 			</div>
+			
 			<div class="row">
-				<div class="col s6">
-					<div class="content">
-						<img src="weixin/img/product-new1.png" alt="">
-						<h6><a href="">Fashion Men's</a></h6>
-						<div class="price">
-							$20 <span>$28</span>
+					@foreach ($data as $k=>$v)
+					<div class="col s6">
+						<div class="content">
+							<a href="{{url('goodslist/'.$v->goods_id)}}"><img src="{{url('storage/'.$v->goods_img)}}"></a>
+							<h6><a href="">{{$v->goods_name}}</a></h6>
+							<div class="price">
+								￥{{$v->goods_price}} <span>￥{{$v->goods_price+6235}}</span>
+							</div>
+							<button class="btn button-default">加入购物车</button>
 						</div>
-						<button class="btn button-default">ADD TO CART</button>
 					</div>
-				</div>
-				<div class="col s6">
-					<div class="content">
-						<img src="weixin/img/product-new2.png" alt="">
-						<h6><a href="">Fashion Men's</a></h6>
-						<div class="price">
-							$20 <span>$28</span>
+					@endforeach
+					{{-- <div class="col s6">
+						<div class="content">
+							<img src="weixin/img/product-new2.png" alt="">
+							<h6><a href="">{{$v->goods_name}}</a></h6>
+							<div class="price">
+								{{$v->goods_price}}<span>$28</span>
+							</div>
+							<button class="btn button-default">ADD TO CART</button>
 						</div>
-						<button class="btn button-default">ADD TO CART</button>
-					</div>
+					</div> --}}
 				</div>
-			</div>
-			<div class="row margin-bottom">
+			
+		
+			{{-- <div class="row margin-bottom">
 				<div class="col s6">
 					<div class="content">
 						<img src="weixin/img/product-new3.png" alt="">
@@ -250,13 +255,13 @@
 						<button class="btn button-default">ADD TO CART</button>
 					</div>
 				</div>
-			</div>
+			</div> --}}
 		</div>
 	</div>
 	<!-- end product -->
 
 	<!-- promo -->
-	<div class="promo section">
+	{{-- <div class="promo section">
 		<div class="container">
 			<div class="content">
 				<h4>PRODUCT BUNDLE</h4>
@@ -329,7 +334,7 @@
 				</ul>
 			</div>
 		</div>
-	</div>
+	</div> --}}
 	<div id="fakeLoader"></div>
 @endsection
 	

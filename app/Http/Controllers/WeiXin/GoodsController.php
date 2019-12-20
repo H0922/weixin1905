@@ -5,6 +5,7 @@ namespace App\Http\Controllers\WeiXin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Model\WxUserModel as User;
+use App\Model\WxGoodsModel as Goods;
 class GoodsController extends Controller
 {
     //接收信息
@@ -26,9 +27,8 @@ class GoodsController extends Controller
        $link=User::where('openid','=',$user['openid'])->first();
        session(['headimgurl'=>$link['headimgurl']]);  
        session(['nickname'=>$link['nickname']]);    
-       return view('weixin.goods.index');
-    //    $this->index();
-    //    return view('weixin.goods.ce');
+       $data=Goods::get();
+       return view('weixin.goods.index',['data'=>$data]);
     }
     public function AccessToken($code){
         $url='https://api.weixin.qq.com/sns/oauth2/access_token?appid='.env('WX_APPID').'&secret='.env('WX_APPSECRET').'&code='.$code.'&grant_type=authorization_code';
@@ -45,14 +45,15 @@ class GoodsController extends Controller
     }
     //后台展示页面页面
     public function index(){
-        // echo '1243';
-        return view('weixin.goods.index');
+        $data=Goods::get();
+        return view('weixin.goods.index',['data'=>$data]);
     }
 
     //商品详情页
-    public function goodslist(){
-        // echo '1243';
-        return view('weixin.goods.goodslist');
+    public function goodslist($goods_id){
+        $link=Goods::where('goods_id','=',$goods_id)->first();
+        return view('weixin.goods.goodslist',['link'=>$link]);
+
 
     }
 }

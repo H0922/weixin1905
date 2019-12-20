@@ -15,7 +15,7 @@ Route::group([
     $router->resource('text', TextController::class);
     $router->resource('image', ImgController::class);
     $router->resource('voice', VoiceController::class);
-
+    $router->resource('goods', GoodsController::class);
 
 
 

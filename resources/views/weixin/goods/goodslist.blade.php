@@ -116,11 +116,12 @@
 	<div class="pages section">
 		<div class="container">
 			<div class="shop-single">
-				<img src="weixin/img/shop-single.png" alt="">
-				<h5>Fashion Men's</h5>
-				<div class="price">$20 <span>$28</span></div>
-				<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam eaque in non delectus, error iste veniam commodi mollitia, officia possimus, repellendus maiores doloribus provident. Itaque, ab perferendis nemo tempore! Accusamus</p>
-				<button type="button" class="btn button-default">ADD TO CART</button>
+				<img src="{{url('storage/'.$link->goods_img)}}" alt="">
+				<h5>{{$link->goods_name}}</h5>
+				<div class="price">￥{{$link->goods_price}} <span>￥{{$link->goods_price+6235}} </span></div>
+				{{-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsam eaque in non delectus, error iste veniam commodi mollitia, officia possimus, repellendus maiores doloribus provident. Itaque, ab perferendis nemo tempore! Accusamus</p> --}}
+				{!! $link->goods_desc !!}
+				<button type="button" class="btn button-default">加入购物车</button>
 			</div>
 			<div class="review">
 					<h5>1 reviews</h5>
