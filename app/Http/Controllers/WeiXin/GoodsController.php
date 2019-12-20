@@ -23,8 +23,10 @@ class GoodsController extends Controller
        $access_tokrn=$token['access_token'];
        $openid=$token['openid'];
        $user=$this->Userxi($access_tokrn,$openid);
-       $link=User::where('openid','=',$user['openid'])->first();    
-       return view('weixin.goods.index',['link'=>$link]);
+       $link=User::where('openid','=',$user['openid'])->first();
+       session(['headimgurl'=>$link['headimgurl']]);  
+       session(['nickname'=>$link['nickname']]);    
+       return view('weixin.goods.index');
     //    $this->index();
     //    return view('weixin.goods.ce');
     }
