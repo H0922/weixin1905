@@ -332,6 +332,27 @@ class wxcontroller extends Controller
         ]);
        echo $res->getBody();
     }
+    //微信群发接口
+    public function qunfa(){
+        // echo 525222;
+        $opid=Mu::get()->toArray();
+        $openid=array_column($opid,'openid');
+        $url='https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token='.$this->access_token;
+        $con=date('Y-m-d H:i:s').'群发消息测试';
+        $qun=[
+            "touser"=>$openid,
+            "msgtype"=>"text",
+            "text"=>[
+                "content"=>$con
+            ]
+        ];
+        $json_qun=json_encode($qun,JSON_UNESCAPED_UNICODE);
+        $client= new Client();
+        $res=$client->request('POST',$url,[
+            'body'=>$json_qun
+        ]);
+            echo $res->getBody();
+    }
 
 
 
