@@ -47,6 +47,10 @@ class WxUserModel extends Model
     }
     /**
      * 计算 jspai签名
+     * @param $ticket
+     * @param $url
+     * @param $param
+     * @return string
      */
     public static function jsapiSign($ticket,$url,$param)
     {
