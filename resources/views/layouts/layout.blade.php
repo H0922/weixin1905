@@ -266,41 +266,6 @@
 	<script src="weixin/js/fakeLoader.min.js"></script>
 	<script src="weixin/js/animatedModal.min.js"></script>
 	<script src="weixin/js/main.js"></script>
-	{{-- <script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script> --}}
-	<script src="weixin/js/weixin.js"></script>
-	<script>
-		wx.config({
-			debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-			appId: "{{$wx_config ?? ''['appId']}}", // 必填，公众号的唯一标识
-			timestamp: "{{$wx_config ?? ''['timestamp']}}", // 必填，生成签名的时间戳
-			nonceStr: "{{$wx_config ?? ''['nonceStr']}}", // 必填，生成签名的随机串
-			signature: "{{$wx_config ?? ''['signature']}}",// 必填，签名
-			jsApiList: ['updateAppMessageShareData','chooseImage','updateTimelineShareData'] // 必填，需要使用的JS接口列表
-		});
-		wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
-			//发送给朋友
-			wx.updateAppMessageShareData({
-				title: '分享测试', // 分享标题
-				desc: '测试', // 分享描述
-				link: 'http://www.bianaoao.top', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-				imgUrl: 'http://www.bianaoao.top/wx_media/imgs/201912170048359453.jpeg', // 分享图标
-				success: function () {
-					// 设置成功
-					alert('设置成功');
-				}
-			})
-			//分享到盆友圈
-			wx.ready(function () {      //需在用户可能点击分享按钮前就先调用
-				wx.updateTimelineShareData({
-					title: '分享测试', // 分享标题
-					link: 'http://www.bianaoao.top', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-					imgUrl: 'http://www.bianaoao.top/wx_media/imgs/201912170048359453.jpeg', // 分享图标
-					success: function () {
-						alert("分享成功");
-					}
-				})
-			});
-		});
-	</script>
+	
 </body>
 </html>
