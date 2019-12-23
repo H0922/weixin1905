@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Model\WxUserModel;
 use GuzzleHttp\Client;
+use App\Model\WxQsceneModel as Qs;
 class QrsceneController extends Controller
 {
     public function index()
@@ -24,12 +25,16 @@ class QrsceneController extends Controller
         $access_tokrn=$token['access_token'];
         $openid=$token['openid'];
         $user=$this->Userxi($access_tokrn,$openid);
-        $qrscene=$this->erweima();
-        return redirect($qrscene);
+        $scene_id=WxUserModel::where('openid','=',$user['openid'])->value('scene_id');
+        $qrscene=$this->erweima($scene_id);
+        $qrscene[]=['scene_id'=>$scene_id];
+        Qs::insert($qrscene);
+        $http=$qrscene['imghttp'];
+        return redirect($http);
     
     }
         //生成二维码
-        public function erweima(){
+        public function erweima($scene_id){
             $accesstoken=WxUserModel::getAccessToken();
             $url='https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token='.$accesstoken;
             $erwei=[
@@ -37,7 +42,7 @@ class QrsceneController extends Controller
                     "action_name"=>"QR_SCENE",
                     "action_info"=>[
                         "scene"=>[
-                            "scene_id"=>"0922"
+                            "scene_id"=>$scene_id
                         ]
                     ]
             ];
@@ -53,9 +58,14 @@ class QrsceneController extends Controller
                // dump($ticket_arr);
                 $ticket_url=urlencode($ticket_arr['ticket']);
                 $add_ticket_url='https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='.$ticket_url;
-                // $http=file_get_contents($add_ticket_url);
-                return $add_ticket_url;
-               // file_put_contents('erwei.jpg',$http);
+                $img_url='qrscene/'.date('YmdHis').'.jpg';
+                $http=file_get_contents($add_ticket_url);
+                file_put_contents($img_url,$http);
+                $add_ticket_url_arr=[
+                    'imgurl'=>$img_url,
+                    'imghttp'=>$add_ticket_url
+                ];
+                return $add_ticket_url_arr;
         } 
 
           

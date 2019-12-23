@@ -99,6 +99,7 @@ class wxcontroller extends Controller
             $user_arr=json_decode($user_json,true);
             // dd($user_arr);
             $sub=Mu::where('openid','=',$open_id)->first();
+            // dd();
             //判断是否以前关注过
             if($sub){
                 $name='欢迎您再次回家'.$user_arr['nickname'];
@@ -109,6 +110,10 @@ class wxcontroller extends Controller
                     'headimgurl'=>$user_arr['headimgurl'],
                 ];
                 Mu::where('openid','=',$open_id)->update($data);
+                $EventKey=$xml_obj->EventKey;
+                if($EventKey){
+                Mu::where('openid','=',$open_id)->update(['scene_id'=>$sub['user_id']]);
+                }
                 $jie='<xml>
                 <ToUserName><![CDATA['.$from.']]></ToUserName>
                 <FromUserName><![CDATA['.$touser.']]></FromUserName>
@@ -127,7 +132,11 @@ class wxcontroller extends Controller
                 'sex'=>$user_arr['sex'],
                 'headimgurl'=>$user_arr['headimgurl'],
             ];
-                Mu::insertGetId($data);
+                $user_id=Mu::insertGetId($data);
+                // $EventKey=$xml_obj->EventKey;
+                // if($EventKey){
+                    Mu::where('user_id','=',$user_id)->update(['scene_id'=>$user_id]);
+                // }
                 $jie='<xml>
                 <ToUserName><![CDATA['.$from.']]></ToUserName>
                 <FromUserName><![CDATA['.$touser.']]></FromUserName>
@@ -416,8 +425,9 @@ class wxcontroller extends Controller
             $ticket_url=urlencode($ticket_arr['ticket']);
             $add_ticket_url='https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='.$ticket_url;
             // $http=file_get_contents($add_ticket_url);
+            // $img_url='qrscene/'.date('YmdHis').'.jpg';
             return redirect($add_ticket_url);
-           // file_put_contents('erwei.jpg',$http);
+        //    dump(file_put_contents($img_url,$http));
     }
 
 

@@ -17,7 +17,7 @@ Route::group([
     $router->resource('voice', VoiceController::class);
     $router->resource('goods', GoodsController::class);
     $router->resource('media', MediaController::class);
-
+    $router->resource('qscene', QsceneController::class);
 
 
 });
