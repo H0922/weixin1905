@@ -18,6 +18,7 @@ class GoodsController extends Controller
          $code=$data['code'];
         //获取access_token
         $token=$this->AccessToken($code);
+        dump($token);
         if(empty($token['access_token'])){
             return "公众号有点小毛病请重新进去一下~";
         }
@@ -36,9 +37,9 @@ class GoodsController extends Controller
             'timestamp' => time(),
             'nonceStr'  => $nonceStr,
         ];
-        $ticket = WxUserModel::getJsapiTicket();
+        $ticket = User::getJsapiTicket();
         $url = $_SERVER['APP_URL'] . $_SERVER['REQUEST_URI'];;      //  当前url
-        $jsapi_signature = WxUserModel::jsapiSign($ticket,$url,$wx_config);
+        $jsapi_signature = User::jsapiSign($ticket,$url,$wx_config);
         $wx_config['signature'] = $jsapi_signature;
        return view('weixin.goods.index',['data'=>$data,'wx_config'=>$wx_config]);
     }
