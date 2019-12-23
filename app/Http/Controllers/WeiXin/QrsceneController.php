@@ -4,7 +4,7 @@ namespace App\Http\Controllers\WeiXin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Model\WxUserModel;
 class QrsceneController extends Controller
 {
     public function index()
@@ -23,8 +23,38 @@ class QrsceneController extends Controller
         $access_tokrn=$token['access_token'];
         $openid=$token['openid'];
         $user=$this->Userxi($access_tokrn,$openid);
-        dd($user);
+        $this->erweima();
+    //    / dd($user);
     }
+        //生成二维码
+        public function erweima(){
+            $accesstoken=WxUserModel::getAccessToken();
+            $url='https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token='.$accesstoken;
+            $erwei=[
+                    "expire_seconds"=>604800,
+                    "action_name"=>"QR_SCENE",
+                    "action_info"=>[
+                        "scene"=>[
+                            "scene_id"=>"0922"
+                        ]
+                    ]
+            ];
+            //post方式请求此链接
+            $json_rewei=json_encode($erwei,JSON_UNESCAPED_UNICODE);
+            $client= new Client();
+            $res=$client->request('POST',$url,[
+                'body'=>$json_rewei
+            ]);
+                echo $ticket=$res->getBody();
+                //获取二维码图片并存入
+                $ticket_arr=json_decode($ticket,true);
+                dump($ticket_arr);
+                $ticket_url=urlencode($ticket_arr['ticket']);
+                $add_ticket_url='https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='.$ticket_url;
+                // $http=file_get_contents($add_ticket_url);
+                return redirect($add_ticket_url);
+               // file_put_contents('erwei.jpg',$http);
+        } 
 
           
         //获取Token
