@@ -30,7 +30,7 @@ Route::get('wx/imgsend','WeiXin\wxcontroller@imgsend');
 Route::get('wx/addimg','WeiXin\wxcontroller@addimg');
 //二维码
 Route::get('wx/erweima','WeiXin\wxcontroller@erweima');
-Route::get('qrscene','WeiXin\QrsceneController@index');
+Route::get('qrs','WeiXin\QrsceneController@index');
 
 //商城路由
 Route::get('goods','WeiXin\GoodsController@index');
