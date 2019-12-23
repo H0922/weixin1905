@@ -39,11 +39,11 @@ class WxUserModel extends Model
         // }
         $access_token = self::getAccessToken();
         $url = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='.$access_token.'&type=wx_card';
-        $j = file_get_contents($url);
-        $data = json_decode($j,true);
+        $josn= file_get_contents($url);
+        $data = json_decode($josn,true);
         // Redis::set($key,$data['ticket']);
         // Redis::expire($key,3600);
-        return $j;
+        return $data['ticket'];
     }
     /**
      * 计算 jspai签名
