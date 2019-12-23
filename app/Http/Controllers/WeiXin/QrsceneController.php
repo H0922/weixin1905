@@ -30,9 +30,15 @@ class QrsceneController extends Controller
         $user=$this->Userxi($access_tokrn,$openid);
         $scene_id=WxUserModel::where('openid','=',$user['openid'])->value('scene_id');
         $qrscene=$this->erweima($scene_id);
-        $qrscene[]=['scene_id'=>$scene_id];
-        Qs::insert($qrscene);
         $httpss=$qrscene['imghttp'];
+        $imgurl=$qrscene['imgurl'];
+        $scene_arr=[
+            'imghttp'=>$httpss,
+            'imgurl'=>$imgurl,
+            'scene_id'=>$scene_id
+        ];
+        // $qrscene[]=['scene_id'=>$scene_id];
+        Qs::insert($scene_arr);
         return redirect($httpss);
     
     }
