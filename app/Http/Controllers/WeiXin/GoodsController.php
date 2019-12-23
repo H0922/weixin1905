@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Model\WxUserModel as User;
 use App\Model\WxGoodsModel as Goods;
+use Illuminate\Support\Str;
 class GoodsController extends Controller
 {
     //接收信息
