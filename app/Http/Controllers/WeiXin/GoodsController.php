@@ -38,6 +38,7 @@ class GoodsController extends Controller
             'nonceStr'  => $nonceStr,
         ];
         $ticket = User::getJsapiTicket();
+        dd($ticket);
         $url = $_SERVER['APP_URL'] . $_SERVER['REQUEST_URI'];;      //  当前url
         $jsapi_signature = User::jsapiSign($ticket,$url,$wx_config);
         $wx_config['signature'] = $jsapi_signature;

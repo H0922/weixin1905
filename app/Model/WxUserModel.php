@@ -43,7 +43,7 @@ class WxUserModel extends Model
         $data = json_decode($j,true);
         // Redis::set($key,$data['ticket']);
         // Redis::expire($key,3600);
-        return $data['ticket'];
+        return $j;
     }
     /**
      * 计算 jspai签名
