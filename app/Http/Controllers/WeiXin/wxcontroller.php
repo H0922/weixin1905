@@ -362,7 +362,27 @@ class wxcontroller extends Controller
         ]);
             echo $res->getBody();
     }
-
+    public function imgsend(){
+        //文档的调用路径
+        // $url='https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token='.$this->access_token;
+        //预览方法的调用路径
+        $url='https://api.weixin.qq.com/cgi-bin/message/mass/preview?access_token='.$this->access_token;
+        $opid=Mu::get()->toArray();
+        $openid=array_column($opid,'openid');
+        $qun=[
+            "touser"=>'oQj6Rv3FhT85S9oSgg7V5uImOGRQ',
+            "image"=>[
+                "media_id"=>"5wI96sanmTFF_UnXICrDzS8HQVbqjkcckXc_tXhuafFt6VsKUwIse0UQcOOCzDnV"
+            ],
+            "msgtype"=>"image",
+        ];
+        $json_qun=json_encode($qun,JSON_UNESCAPED_UNICODE);
+        $client= new Client();
+        $res=$client->request('POST',$url,[
+            'body'=>$json_qun
+        ]);
+            echo $res->getBody();
+    }
 
 
 }

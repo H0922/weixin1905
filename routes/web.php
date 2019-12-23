@@ -25,6 +25,8 @@ Route::get('wx/menu','WeiXin\wxcontroller@menu');
 Route::get('vote','WeiXin\VoteConteller@index');
 Route::get('key','WeiXin\VoteConteller@delkey');
 Route::get('wx/qunfa','WeiXin\wxcontroller@qunfa');
+Route::get('wx/imgsend','WeiXin\wxcontroller@imgsend');
+Route::get('wx/addimg','WeiXin\wxcontroller@addimg');
 
 //商城路由
 Route::get('goods','WeiXin\GoodsController@index');

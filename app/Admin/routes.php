@@ -16,7 +16,7 @@ Route::group([
     $router->resource('image', ImgController::class);
     $router->resource('voice', VoiceController::class);
     $router->resource('goods', GoodsController::class);
-
+    $router->resource('media', MediaController::class);
 
 
 
