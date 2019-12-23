@@ -112,7 +112,7 @@ class wxcontroller extends Controller
                 Mu::where('openid','=',$open_id)->update($data);
                 $EventKey=$xml_obj->EventKey;
                 if($EventKey){
-                Mu::where('openid','=',$open_id)->update(['scene_id'=>$sub['user_id']]);
+                Mu::where('openid','=',$open_id)->update(['scene_id'=>$EventKey]);
                 }
                 $jie='<xml>
                 <ToUserName><![CDATA['.$from.']]></ToUserName>
@@ -133,10 +133,13 @@ class wxcontroller extends Controller
                 'headimgurl'=>$user_arr['headimgurl'],
             ];
                 $user_id=Mu::insertGetId($data);
-                // $EventKey=$xml_obj->EventKey;
-                // if($EventKey){
-                    Mu::where('user_id','=',$user_id)->update(['scene_id'=>$user_id]);
-                // }
+                Mu::where('user_id','=',$user_id)->update(['scene_id'=>$user_id]);
+                $EventKey=$xml_obj->EventKey;
+                if($EventKey){
+                    $eve=strpos($EventKey,'_');
+                    $scene_id=substr($EventKey,$eve+1);
+                    Mu::where('user_id','=',$user_id)->update(['scene_id'=>$scene_id]);
+                }
                 $jie='<xml>
                 <ToUserName><![CDATA['.$from.']]></ToUserName>
                 <FromUserName><![CDATA['.$touser.']]></FromUserName>
