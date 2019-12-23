@@ -298,7 +298,9 @@ class wxcontroller extends Controller
         $ewd_url=urlencode($urll);
         $goods='http://www.bianaoao.top/goodsgoods';
         $goods_url=urlencode($goods);
-        dd('https://open.weixin.qq.com/connect/oauth2/authorize?appid='.env('WX_APPID').'&redirect_uri='.$goods_url.'&response_type=code&scope=snsapi_userinfo&state=1905goods#wechat_redirect');
+        $qrscene='http://www.bianaoao.top/qrscene';
+        $qrscene_url=urlencode($qrscene);
+       // dd('https://open.weixin.qq.com/connect/oauth2/authorize?appid='.env('WX_APPID').'&redirect_uri='.$goods_url.'&response_type=code&scope=snsapi_userinfo&state=1905goods#wechat_redirect');
         $url='https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->access_token;
         $menu=[
             'button'=>[
@@ -319,6 +321,11 @@ class wxcontroller extends Controller
                         'type'=>'click',
                         'name'=>'获取天气',
                         'key'=>'tianqi'
+                    ],
+                    [
+                        'type'=>'view',
+                        'name'=>'获取推荐二维码',
+                        'url'=>'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.env('WX_APPID').'&redirect_uri='.$qrscene_url.'&response_type=code&scope=snsapi_userinfo&state=1905qrscene#wechat_redirect'
                     ]
                     ]
                 ]
@@ -382,6 +389,35 @@ class wxcontroller extends Controller
             'body'=>$json_qun
         ]);
             echo $res->getBody();
+    }
+
+    //生成二维码
+    public function erweima(){
+        $url='https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token='.$this->access_token;
+        $erwei=[
+                "expire_seconds"=>604800,
+                "action_name"=>"QR_SCENE",
+                "action_info"=>[
+                    "scene"=>[
+                        "scene_id"=>"0922"
+                    ]
+                ]
+        ];
+        //post方式请求此链接
+        $json_rewei=json_encode($erwei,JSON_UNESCAPED_UNICODE);
+        $client= new Client();
+        $res=$client->request('POST',$url,[
+            'body'=>$json_rewei
+        ]);
+            echo $ticket=$res->getBody();
+            //获取二维码图片并存入
+            $ticket_arr=json_decode($ticket,true);
+            dump($ticket_arr);
+            $ticket_url=urlencode($ticket_arr['ticket']);
+            $add_ticket_url='https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='.$ticket_url;
+            // $http=file_get_contents($add_ticket_url);
+            return redirect($add_ticket_url);
+           // file_put_contents('erwei.jpg',$http);
     }
 
 

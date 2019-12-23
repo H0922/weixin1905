@@ -21,12 +21,16 @@ Route::get('info', function () {
 
 Route::get('wx','WeiXin\wxcontroller@wx');
 Route::post('wx','WeiXin\wxcontroller@wxer');
+//刷新订阅号菜单
 Route::get('wx/menu','WeiXin\wxcontroller@menu');
 Route::get('vote','WeiXin\VoteConteller@index');
 Route::get('key','WeiXin\VoteConteller@delkey');
 Route::get('wx/qunfa','WeiXin\wxcontroller@qunfa');
 Route::get('wx/imgsend','WeiXin\wxcontroller@imgsend');
 Route::get('wx/addimg','WeiXin\wxcontroller@addimg');
+//二维码
+Route::get('wx/erweima','WeiXin\wxcontroller@erweima');
+Route::get('qrscene','WeiXin\QrsceneController@index');
 
 //商城路由
 Route::get('goods','WeiXin\GoodsController@index');
