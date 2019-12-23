@@ -62,13 +62,13 @@ class QrsceneController extends Controller
                 $ticket_url=urlencode($ticket_arr['ticket']);
                 $add_ticket_url='https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='.$ticket_url;
                 $img_url='qrscene/'.date('YmdHis').'.jpg';
-                // $http=file_get_contents($add_ticket_url);
-                // file_put_contents($img_url,$http);
+                $http=file_get_contents($add_ticket_url);
+                file_put_contents($img_url,$http);
                 $add_ticket_url_arr=[
                     'imgurl'=>$img_url,
                     'imghttp'=>$add_ticket_url
                 ];
-                return $add_ticket_url;
+                return $add_ticket_url_arr;
         } 
 
           
