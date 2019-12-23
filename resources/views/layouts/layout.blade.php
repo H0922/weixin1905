@@ -282,10 +282,10 @@
 				title: '分享测试', // 分享标题
 				desc: '测试', // 分享描述
 				link: 'http://www.bianaoao.top', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-				imgUrl: 'http://www.bianaoao.top/storage/image/t1.jpg', // 分享图标
+				imgUrl: 'http://www.bianaoao.top/wx_media/imgs/201912170048359453.jpeg', // 分享图标
 				success: function () {
 					// 设置成功
-					alert(11111);
+					alert('设置成功');
 				}
 			})
 			//分享到盆友圈
@@ -293,7 +293,7 @@
 				wx.updateTimelineShareData({
 					title: '分享测试', // 分享标题
 					link: 'http://www.bianaoao.top', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-					imgUrl: 'http://www.bianaoao.top/storage/image/t1.jpg', // 分享图标
+					imgUrl: 'http://www.bianaoao.top/wx_media/imgs/201912170048359453.jpeg', // 分享图标
 					success: function () {
 						alert("分享成功");
 					}
