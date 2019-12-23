@@ -24,8 +24,9 @@ class QrsceneController extends Controller
         $access_tokrn=$token['access_token'];
         $openid=$token['openid'];
         $user=$this->Userxi($access_tokrn,$openid);
-        $this->erweima();
-    //    / dd($user);
+        $qrscene=$this->erweima();
+        return redirect($qrscene);
+    
     }
         //生成二维码
         public function erweima(){
@@ -46,14 +47,14 @@ class QrsceneController extends Controller
             $res=$client->request('POST',$url,[
                 'body'=>$json_rewei
             ]);
-                echo $ticket=$res->getBody();
+                $ticket=$res->getBody();
                 //获取二维码图片并存入
                 $ticket_arr=json_decode($ticket,true);
-                dump($ticket_arr);
+               // dump($ticket_arr);
                 $ticket_url=urlencode($ticket_arr['ticket']);
                 $add_ticket_url='https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='.$ticket_url;
                 // $http=file_get_contents($add_ticket_url);
-                return redirect($add_ticket_url);
+                return $add_ticket_url;
                // file_put_contents('erwei.jpg',$http);
         } 
 
