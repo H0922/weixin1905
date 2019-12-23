@@ -43,7 +43,7 @@ class GoodsController extends Controller
         $jsapi_signature = User::jsapiSign($ticket,$url,$wx_config);
         $wx_config['signature'] = $jsapi_signature;
         // dd($wx_config);
-       return view('weixin.goods.index',['data'=>$data,'wx_config'=>$wx_config]);
+       return view('weixin.goods.index',['data'=>$data],['wx_config'=>$wx_config]);
     }
     public function AccessToken($code){
         $url='https://api.weixin.qq.com/sns/oauth2/access_token?appid='.env('WX_APPID').'&secret='.env('WX_APPSECRET').'&code='.$code.'&grant_type=authorization_code';

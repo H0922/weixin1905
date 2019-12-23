@@ -33,16 +33,16 @@ class WxUserModel extends Model
     public static function getJsapiTicket()
     {
         $key = 'wx_jsapi_ticket';
-        // $ticket  = Redis::get($key);
-        // if($ticket){
-        //     return $ticket;
-        // }
+        $ticket  = Redis::get($key);
+        if($ticket){
+            return $ticket;
+        }
         $access_token = self::getAccessToken();
-        $url = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='.$access_token.'&type=wx_card';
+        $url = 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='.$access_token.'&type=jsapi';
         $josn= file_get_contents($url);
         $data = json_decode($josn,true);
-        // Redis::set($key,$data['ticket']);
-        // Redis::expire($key,3600);
+        Redis::set($key,$data['ticket']);
+        Redis::expire($key,3600);
         return $data['ticket'];
     }
     /**
