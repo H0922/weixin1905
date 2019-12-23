@@ -28,7 +28,18 @@ class GoodsController extends Controller
        session(['headimgurl'=>$link['headimgurl']]);  
        session(['nickname'=>$link['nickname']]);    
        $data=Goods::get();
-       return view('weixin.goods.index',['data'=>$data]);
+        //微信配置
+        $nonceStr = Str::random(8);
+        $wx_config = [
+            'appId'     => env('WX_APPID'),
+            'timestamp' => time(),
+            'nonceStr'  => $nonceStr,
+        ];
+        $ticket = WxUserModel::getJsapiTicket();
+        $url = $_SERVER['APP_URL'] . $_SERVER['REQUEST_URI'];;      //  当前url
+        $jsapi_signature = WxUserModel::jsapiSign($ticket,$url,$wx_config);
+        $wx_config['signature'] = $jsapi_signature;
+       return view('weixin.goods.index',['data'=>$data,'wx_config'=>$wx_config]);
     }
     public function AccessToken($code){
         $url='https://api.weixin.qq.com/sns/oauth2/access_token?appid='.env('WX_APPID').'&secret='.env('WX_APPSECRET').'&code='.$code.'&grant_type=authorization_code';
