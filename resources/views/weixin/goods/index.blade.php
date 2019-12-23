@@ -221,120 +221,43 @@
 						</div>
 					</div>
 					@endforeach
-					{{-- <div class="col s6">
-						<div class="content">
-							<img src="weixin/img/product-new2.png" alt="">
-							<h6><a href="">{{$v->goods_name}}</a></h6>
-							<div class="price">
-								{{$v->goods_price}}<span>$28</span>
-							</div>
-							<button class="btn button-default">ADD TO CART</button>
-						</div>
-					</div> --}}
 				</div>
-			
-		
-			{{-- <div class="row margin-bottom">
-				<div class="col s6">
-					<div class="content">
-						<img src="weixin/img/product-new3.png" alt="">
-						<h6><a href="">Fashion Men's</a></h6>
-						<div class="price">
-							$20 <span>$28</span>
-						</div>
-						<button class="btn button-default">ADD TO CART</button>
-					</div>
-				</div>
-				<div class="col s6">
-					<div class="content">
-						<img src="weixin/img/product-new4.png" alt="">
-						<h6><a href="">Fashion Men's</a></h6>
-						<div class="price">
-							$20 <span>$28</span>
-						</div>
-						<button class="btn button-default">ADD TO CART</button>
-					</div>
-				</div>
-			</div> --}}
 		</div>
 	</div>
-	<!-- end product -->
-
-	<!-- promo -->
-	{{-- <div class="promo section">
-		<div class="container">
-			<div class="content">
-				<h4>PRODUCT BUNDLE</h4>
-				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit</p>
-				<button class="btn button-default">SHOP NOW</button>
-			</div>
-		</div>
-	</div>
-	<!-- end promo -->
-
-	<!-- product -->
-	<div class="section product">
-		<div class="container">
-			<div class="section-head">
-				<h4>TOP PRODUCT</h4>
-				<div class="divider-top"></div>
-				<div class="divider-bottom"></div>
-			</div>
-			<div class="row">
-				<div class="col s6">
-					<div class="content">
-						<img src="weixin/img/product-new1.png" alt="">
-						<h6><a href="">Fashion Men's</a></h6>
-						<div class="price">
-							$20 <span>$28</span>
-						</div>
-						<button class="btn button-default">ADD TO CART</button>
-					</div>
-				</div>
-				<div class="col s6">
-					<div class="content">
-						<img src="weixin/img/product-new2.png" alt="">
-						<h6><a href="">Fashion Men's</a></h6>
-						<div class="price">
-							$20 <span>$28</span>
-						</div>
-						<button class="btn button-default">ADD TO CART</button>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col s6">
-					<div class="content">
-						<img src="weixin/img/product-new3.png" alt="">
-						<h6><a href="">Fashion Men's</a></h6>
-						<div class="price">
-							$20 <span>$28</span>
-						</div>
-						<button class="btn button-default">ADD TO CART</button>
-					</div>
-				</div>
-				<div class="col s6">
-					<div class="content">
-						<img src="weixin/img/product-new4.png" alt="">
-						<h6><a href="">Fashion Men's</a></h6>
-						<div class="price">
-							$20 <span>$28</span>
-						</div>
-						<button class="btn button-default">ADD TO CART</button>
-					</div>
-				</div>
-			</div>
-			<div class="pagination-product">
-				<ul>
-					<li class="active">1</li>
-					<li><a href="">2</a></li>
-					<li><a href="">3</a></li>
-					<li><a href="">4</a></li>
-					<li><a href="">5</a></li>
-				</ul>
-			</div>
-		</div>
-	</div> --}}
 	<div id="fakeLoader"></div>
 @endsection
-	
+<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+<script>
+    wx.config({
+        debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: "{{$wx_config['appId']}}", // 必填，公众号的唯一标识
+        timestamp: "{{$wx_config['timestamp']}}", // 必填，生成签名的时间戳
+        nonceStr: "{{$wx_config['nonceStr']}}", // 必填，生成签名的随机串
+        signature: "{{$wx_config['signature']}}",// 必填，签名
+        jsApiList: ['updateAppMessageShareData','chooseImage','updateTimelineShareData'] // 必填，需要使用的JS接口列表
+    });
+    wx.ready(function () {   //需在用户可能点击分享按钮前就先调用
+        //发送给朋友
+        wx.updateAppMessageShareData({
+            title: '分享测试', // 分享标题
+            desc: '描述', // 分享描述
+            link: 'http://www.bianaoao.top/img/2ha.jpg', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: 'http://www.bianaoao.top/img/2ha.jpg', // 分享图标
+            success: function () {
+                // 设置成功
+                alert(11111);
+            }
+        })
+        //分享到盆友圈
+        wx.ready(function () {      //需在用户可能点击分享按钮前就先调用
+            wx.updateTimelineShareData({
+                title: '分享测试', // 分享标题
+                link: 'http://www.bianaoao.top/img/2ha.jpg', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                imgUrl: 'http://www.bianaoao.top/img/2ha.jpg', // 分享图标
+                success: function () {
+                    alert("分享成功");
+                }
+            })
+        });
+    });
+</script>
