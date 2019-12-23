@@ -252,7 +252,7 @@
         wx.ready(function () {      //需在用户可能点击分享按钮前就先调用
             wx.updateTimelineShareData({
                 title: '分享测试', // 分享标题
-                link: 'http://www.bianaoao.top/storage/image/s1.jpg', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+                link: 'http://www.bianaoao.top', // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
                 imgUrl: 'http://www.bianaoao.top/storage/image/t1.jpg', // 分享图标
                 success: function () {
                     alert("分享成功");
