@@ -36,6 +36,7 @@ Route::get('qrs','WeiXin\QrsceneController@index');
 Route::get('goods','WeiXin\GoodsController@index');
 Route::get('goodslist/{goods_id}','WeiXin\GoodsController@goodslist');
 Route::get('goodsgoods','WeiXin\GoodsController@goods');
+Route::get('goodslogin','WeiXin\GoodsController@login');
 
 
 

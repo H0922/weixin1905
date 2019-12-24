@@ -9,13 +9,12 @@ use App\Model\WxGoodsModel as Goods;
 use Illuminate\Support\Str;
 class GoodsController extends Controller
 {
-    //接收信息
-    public function goods(){
+    public function login(){
         $data=$_GET;
         if(empty($data)){
             return '请您在微信内打开此链接';
         }
-         $code=$data['code'];
+        $code=$data['code'];
         //获取access_token
         $token=$this->AccessToken($code);
         // dump($token);
@@ -29,6 +28,10 @@ class GoodsController extends Controller
        $link=User::where('openid','=',$user['openid'])->first();
        session(['headimgurl'=>$link['headimgurl']]);  
        session(['nickname'=>$link['nickname']]);    
+       return redirect('goodsgoods');
+    }
+    //商城首页
+    public function goods(){
        $data=Goods::get();
         //微信配置
         $nonceStr = Str::random(8);
@@ -38,13 +41,11 @@ class GoodsController extends Controller
             'nonceStr'  => $nonceStr,
         ];
         $ticket = User::getJsapiTicket();
-        // dump($ticket);
         $goods=$_SERVER['REQUEST_URI'];
         $g=substr($goods,1);
-        $url = 'http://www.bianaoao.top/'.$g;     //  当前url
+        $url = 'http://www.bianaoao.top/'.$g;     
         $jsapi_signature = User::jsapiSign($ticket,$url,$wx_config);
         $wx_config['signature'] = $jsapi_signature;
-        // dd($wx_config);
        return view('weixin.goods.index',['data'=>$data,'wx_config'=>$wx_config]);
     }
     public function AccessToken($code){
