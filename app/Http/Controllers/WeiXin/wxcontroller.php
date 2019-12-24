@@ -411,7 +411,7 @@ class wxcontroller extends Controller
                 "action_name"=>"QR_SCENE",
                 "action_info"=>[
                     "scene"=>[
-                        "scene_id"=>"0922"
+                        "scene_id"=>""
                     ]
                 ]
         ];

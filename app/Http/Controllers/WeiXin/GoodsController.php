@@ -79,6 +79,13 @@ class GoodsController extends Controller
         return view('weixin.goods.index',['data'=>$data]);
     }
 
+    public function indexlogin(){
+        echo "请您先关注此公众号";
+        echo '<br>';
+        echo "扫描下方二维码关注后点击商城自动登录";
+        return redirect('wx/erweima');
+    }
+
     //商品详情页
     public function goodslist($goods_id){
         $link=Goods::where('goods_id','=',$goods_id)->first();
