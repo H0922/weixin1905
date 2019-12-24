@@ -39,7 +39,9 @@ class GoodsController extends Controller
         ];
         $ticket = User::getJsapiTicket();
         // dump($ticket);
-        $url = $_SERVER['APP_URL'] . $_SERVER['REQUEST_URI'];;      //  当前url
+        $goods=$_SERVER['REQUEST_URI'];
+        $g=substr($goods,1);
+        $url = $_SERVER['APP_URL'] .$g;     //  当前url
         $jsapi_signature = User::jsapiSign($ticket,$url,$wx_config);
         $wx_config['signature'] = $jsapi_signature;
         // dd($wx_config);
@@ -68,15 +70,17 @@ class GoodsController extends Controller
             'nonceStr'  => $nonceStr,
         ];
         $ticket = User::getJsapiTicket();
-        // dump($ticket);
-        $url = $_SERVER['APP_URL'] . $_SERVER['REQUEST_URI'];;      //  当前url
+        $goods=$_SERVER['REQUEST_URI'];
+        $g=substr($goods,1);
+        $url = $_SERVER['APP_URL'] . $g;   //  当前url
         // dd($_SERVER);
         $jsapi_signature = User::jsapiSign($ticket,$url,$wx_config);
         // dump($ticket);
-        // dump($url);
-        // dump($wx_config);
+        //dump($url);
+       
         // dd($jsapi_signature);
         $wx_config['signature'] = $jsapi_signature;
+        //dd($wx_config);
         return view('weixin.goods.index',['data'=>$data,'wx_config'=>$wx_config]);
     }
 
