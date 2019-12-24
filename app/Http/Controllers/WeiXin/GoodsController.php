@@ -43,7 +43,7 @@ class GoodsController extends Controller
         $jsapi_signature = User::jsapiSign($ticket,$url,$wx_config);
         $wx_config['signature'] = $jsapi_signature;
         // dd($wx_config);
-       return view('weixin.goods.index',['data'=>$data],['wx_config'=>$wx_config]);
+       return view('weixin.goods.index',['data'=>$data,'wx_config'=>$wx_config]);
     }
     public function AccessToken($code){
         $url='https://api.weixin.qq.com/sns/oauth2/access_token?appid='.env('WX_APPID').'&secret='.env('WX_APPSECRET').'&code='.$code.'&grant_type=authorization_code';
@@ -61,7 +61,23 @@ class GoodsController extends Controller
     //后台展示页面页面
     public function index(){
         $data=Goods::get();
-        return view('weixin.goods.index',['data'=>$data]);
+        $nonceStr = Str::random(8);
+        $wx_config = [
+            'appId'     => env('WX_APPID'),
+            'timestamp' => time(),
+            'nonceStr'  => $nonceStr,
+        ];
+        $ticket = User::getJsapiTicket();
+        // dump($ticket);
+        $url = $_SERVER['APP_URL'] . $_SERVER['REQUEST_URI'];;      //  当前url
+        // dd($_SERVER);
+        $jsapi_signature = User::jsapiSign($ticket,$url,$wx_config);
+        // dump($ticket);
+        // dump($url);
+        // dump($wx_config);
+        // dd($jsapi_signature);
+        $wx_config['signature'] = $jsapi_signature;
+        return view('weixin.goods.index',['data'=>$data,'wx_config'=>$wx_config]);
     }
 
     //商品详情页
