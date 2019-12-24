@@ -41,7 +41,7 @@ class GoodsController extends Controller
         // dump($ticket);
         $goods=$_SERVER['REQUEST_URI'];
         $g=substr($goods,1);
-        $url = $_SERVER['APP_URL'] .$g;     //  当前url
+        $url = 'http://www.bianaoao.top/'.$g;     //  当前url
         $jsapi_signature = User::jsapiSign($ticket,$url,$wx_config);
         $wx_config['signature'] = $jsapi_signature;
         // dd($wx_config);
@@ -63,25 +63,19 @@ class GoodsController extends Controller
     //后台展示页面页面
     public function index(){
         $data=Goods::get();
-        $nonceStr = Str::random(8);
-        $wx_config = [
-            'appId'     => env('WX_APPID'),
-            'timestamp' => time(),
-            'nonceStr'  => $nonceStr,
-        ];
-        $ticket = User::getJsapiTicket();
-        $goods=$_SERVER['REQUEST_URI'];
-        $g=substr($goods,1);
-        $url = $_SERVER['APP_URL'] . $g;   //  当前url
-        // dd($_SERVER);
-        $jsapi_signature = User::jsapiSign($ticket,$url,$wx_config);
-        // dump($ticket);
-        //dump($url);
-       
-        // dd($jsapi_signature);
-        $wx_config['signature'] = $jsapi_signature;
-        //dd($wx_config);
-        return view('weixin.goods.index',['data'=>$data,'wx_config'=>$wx_config]);
+        // $nonceStr = Str::random(8);
+        // $wx_config = [
+        //     'appId'     => env('WX_APPID'),
+        //     'timestamp' => time(),
+        //     'nonceStr'  => $nonceStr,
+        // ];
+        // $ticket = User::getJsapiTicket();
+        // $goods=$_SERVER['REQUEST_URI'];
+        // $g=substr($goods,1);
+        // $url = $_SERVER['APP_URL'] . $g;   //  当前url
+        // $jsapi_signature = User::jsapiSign($ticket,$url,$wx_config);
+        // $wx_config['signature'] = $jsapi_signature;
+        return view('weixin.goods.index',['data'=>$data]);
     }
 
     //商品详情页
