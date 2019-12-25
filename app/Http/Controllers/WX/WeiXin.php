@@ -4,9 +4,14 @@ namespace App\Http\Controllers\WX;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Model\WxUserModel;
 class WeiXin extends Controller
 {
+
+    //测试token是否可用
+    public function token(){
+        echo WxUserModel::getAccessToken();
+    }
    
      //链接微信接口
     public function wei(){

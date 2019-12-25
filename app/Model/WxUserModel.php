@@ -27,6 +27,16 @@ class WxUserModel extends Model
         Redis::expire($key,3600);
         return $arr['access_token'];
     }
+    //获取用户的基本信息
+    public static function getUserInfo($open_id){
+        $token=WxUserModel::getAccessToken();
+        $url='https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$token.'&openid='.$open_id.'&lang=zh_CN';
+        //发送网络请求   发送的get的请求
+        $json_str=file_get_contents($url);
+        $data= json_decode($json_str,true);
+        return $data;
+
+    }
      /**
      * 获取jsapi_ticket
      */
