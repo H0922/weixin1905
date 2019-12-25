@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 
 class WeiXin extends Controller
 {
-    //链接微信接口
-    public function wx(){
+   
+     //链接微信接口
+    public function wei(){
+        // dd(45641564541);
         $token = '737051678ysd72bs7d2';
         $signature = $_GET["signature"];
         $timestamp = $_GET["timestamp"];

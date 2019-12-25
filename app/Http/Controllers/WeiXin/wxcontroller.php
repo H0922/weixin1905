@@ -296,7 +296,6 @@ class wxcontroller extends Controller
         sort($tmpArr, SORT_STRING);
         $tmpStr = implode( $tmpArr );
         $tmpStr = sha1( $tmpStr );
-        
         if( $tmpStr == $signature ){
             echo $ec;
         }else{
