@@ -102,7 +102,7 @@ class wxcontroller extends Controller
             // dd();
             //判断是否以前关注过
             if($sub){
-                $name='欢迎您再次回家'.$user_arr['nickname'];
+                $name='欢迎您再次回家'.$user_arr['nx xickname'];
                 $data=[
                     'sub_time'=>$xml_obj->CreateTime,
                     'nickname'=>$user_arr['nickname'],
@@ -411,7 +411,7 @@ class wxcontroller extends Controller
                 "action_name"=>"QR_SCENE",
                 "action_info"=>[
                     "scene"=>[
-                        "scene_id"=>""
+                        "scene_id"=>"1019"
                     ]
                 ]
         ];

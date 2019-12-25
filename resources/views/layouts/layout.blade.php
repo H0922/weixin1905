@@ -39,7 +39,6 @@
 				<h2>{{session('nickname')??''}}</h2>
 				@else
 					<h3>您还没<a href="{{url('index/login')}}">登录</a></h3>
-					
 				@endif
 				
 			</li>

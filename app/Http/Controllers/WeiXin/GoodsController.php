@@ -30,6 +30,7 @@ class GoodsController extends Controller
        session(['nickname'=>$link['nickname']]);    
        return redirect('goodsgoods');
     }
+    
     //商城首页
     public function goods(){
        $data=Goods::get();

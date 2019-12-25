@@ -41,6 +41,9 @@ Route::get('index/login','WeiXin\GoodsController@indexlogin');
 
 
 
+//月考
+Route::get('weixin','WX\WeiXin@wx');
+
 
 
 
