@@ -49,7 +49,7 @@ Route::get('ke','WX\WeiXin@ke');
 Route::post('wx/insert','WX\WeiXin@insert');
 Route::get('sss','WX\WeiXin@sss');
 Route::get('wei/upd','WX\WeiXin@upd');
-Route::get('wx/update','WX\WeiXin@upd');
+Route::post('wx/update','WX\WeiXin@upd');
 
 
 Route::get('token','WX\WeiXin@token');
