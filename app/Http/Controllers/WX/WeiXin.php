@@ -40,11 +40,7 @@ class WeiXin extends Controller
         $xml_str=file_get_contents("php://input");
         $data=date('Y-m-d H:i:s',time()).$xml_str;
         file_put_contents($log_file,$data,FILE_APPEND);
-        $xml_obj=simplexml_load_string($xml_str);
-        if($xml_obj->Event=="subscribe"){
-            $this->Usertext($xml_str);
-        }
-        return $xml_str;
+        $this->Usertext($xml_str);
     }
 
     //用户关注消息回复
@@ -102,7 +98,7 @@ class WeiXin extends Controller
         $data=request()->input();
         unset($data['_token']);
         Ke::insert($data);
-        $xml_str=$this->wxer();
+        $xml_str=file_get_contents("php://input");
         $xml_obj=simplexml_load_string($xml_str);
         $openid= $xml_obj->FromUserName;
         $touser=$xml_obj->ToUserName;
