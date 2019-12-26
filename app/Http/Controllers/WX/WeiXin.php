@@ -40,7 +40,10 @@ class WeiXin extends Controller
         $xml_str=file_get_contents("php://input");
         $data=date('Y-m-d H:i:s',time()).$xml_str;
         file_put_contents($log_file,$data,FILE_APPEND);
-        $this->Usertext($xml_str);
+        $xml_obj=simplexml_load_string($xml_str);
+        if($xml_obj->Event=="subscribe"){
+            $this->Usertext($xml_str);
+        }
         return $xml_str;
     }
 
