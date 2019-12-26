@@ -98,10 +98,8 @@ class WeiXin extends Controller
         $data=request()->input();
         unset($data['_token']);
         Ke::insert($data);
-        $xml_str=file_get_contents("php://input");
-        $xml_obj=simplexml_load_string($xml_str);
-        $openid= $xml_obj->FromUserName;
-        $touser=$xml_obj->ToUserName;
+        $openid=$data['openid'];
+        $touser='gh_b685974c626c';
         $time=time();
         $con='您的课程提交成功'."\n".'时间为'.date('Y-m-d H:i:s');
         $link='<xml>
