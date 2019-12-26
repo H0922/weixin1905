@@ -52,8 +52,8 @@
                 </select></td>
             </tr>
             <tr>
-                <td><input type="submit" value="提交"></td>
-                <td><input type="hidden" name="openid" value="{{$openid??''}}">
+                <td><input type="submit" value="确认修改"></td>
+                <td><input type="hidden" name="openid" value="{{$link->openid??''}}">
                 <input type="hidden" name="k_id" value="{{$link->k_id}}">
                 </td>
             </tr>

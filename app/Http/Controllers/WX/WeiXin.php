@@ -41,6 +41,7 @@ class WeiXin extends Controller
         $data=date('Y-m-d H:i:s',time()).$xml_str;
         file_put_contents($log_file,$data,FILE_APPEND);
         $this->Usertext($xml_str);
+        return $xml_str;
     }
 
     //用户关注消息回复
@@ -98,7 +99,20 @@ class WeiXin extends Controller
         $data=request()->input();
         unset($data['_token']);
         Ke::insert($data);
-        echo '您的课程提交成功';
+        $xml_str=$this->wxer();
+        $xml_obj=simplexml_load_string($xml_str);
+        $openid= $xml_obj->FromUserName;
+        $touser=$xml_obj->ToUserName;
+        $time=time();
+        $con='您的课程提交成功'."\n".'时间为'.date('Y-m-d H:i:s');
+        $link='<xml>
+        <ToUserName><![CDATA['.$openid.']]></ToUserName>
+        <FromUserName><![CDATA['.$touser.']]></FromUserName>
+        <CreateTime>'.$time.'</CreateTime>
+        <MsgType><![CDATA[text]]></MsgType>
+        <Content><![CDATA['.$con.']]></Content>
+      </xml>';
+      echo $link;
     }
     public function sss(){
         return view('weixin.wx.list');
@@ -112,7 +126,7 @@ class WeiXin extends Controller
     }
     public function update(){
        $data=request()->input();
-       Ke::updated($data);
+        Ke::updated($data);
         echo '您的课程修改成功';
     }
 }
