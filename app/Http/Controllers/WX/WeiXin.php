@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Model\WxUserModel;
 use App\Model\KeModel as Ke;
+use GuzzleHttp\Client;
+
 class WeiXin extends Controller
 {
 
