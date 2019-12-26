@@ -98,18 +98,8 @@ class WeiXin extends Controller
         $data=request()->input();
         unset($data['_token']);
         Ke::insert($data);
-        $openid=$data['openid'];
-        $touser='gh_b685974c626c';
-        $time=time();
-        $con='您的课程提交成功'."\n".'时间为'.date('Y-m-d H:i:s');
-        $link='<xml>
-        <ToUserName><![CDATA['.$openid.']]></ToUserName>
-        <FromUserName><![CDATA['.$touser.']]></FromUserName>
-        <CreateTime>'.$time.'</CreateTime>
-        <MsgType><![CDATA[text]]></MsgType>
-        <Content><![CDATA['.$con.']]></Content>
-      </xml>';
-      echo $link;
+        $con='您的课程提交成功,时间为'.date('Y-m-d H:i:s');
+        echo $con;
     }
     public function sss(){
         return view('weixin.wx.list');
