@@ -70,6 +70,34 @@ class WeiXin extends Controller
           </xml>';
           echo $link;
         }
+        if ($xml_obj->Event=='CLICK') {
+            //判断并且触发
+            if ($xml_obj->EventKey=='1905ke') {
+                $ke=Ke::where('openid','=',$openid)->first();
+                if($ke){
+                    $b='第一节课'.$ke['ka']."\n".'第二节课'.$ke['kb']."\n".'第三节课'.$ke['kc']."\n".'第四节课'.$ke['kd'];
+                    $a='<xml>
+                            <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                            <FromUserName><![CDATA['.$touser.']]></FromUserName>
+                            <CreateTime>'.$time.'</CreateTime>
+                            <MsgType><![CDATA[text]]></MsgType>
+                            <Content><![CDATA['.$b.']]></Content>
+                            </xml>';
+                 echo $a;
+                }else{
+                    $b='您还没添加课程，请赶快去课程管理添加把';
+                    $a='<xml>
+                            <ToUserName><![CDATA['.$openid.']]></ToUserName>
+                            <FromUserName><![CDATA['.$touser.']]></FromUserName>
+                            <CreateTime>'.$time.'</CreateTime>
+                            <MsgType><![CDATA[text]]></MsgType>
+                            <Content><![CDATA['.$b.']]></Content>
+                            </xml>';
+                 echo $a;
+                }
+               
+            }
+        }
     }
     public function ke(){
         $data=$_GET;
@@ -111,7 +139,7 @@ class WeiXin extends Controller
     }
     public function update(){
        $data=request()->input();
-        Ke::updated($data);
+        Ke::update($data);
         echo '您的课程修改成功';
     }
 }
