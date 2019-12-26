@@ -11,19 +11,19 @@
     <table>
         <tr>
             <td>第一节课</td>
-            <td>{{$link ?? ''->ka??''}}</td>
+            <td>{{$link->ka??''}}</td>
         </tr>
         <tr>
             <td>第二节课</td>
-            <td>{{$link ?? ''->kb??''}}</td>
+            <td>{{$link->kb??''}}</td>
         </tr>
         <tr>
             <td>第三节课</td>
-            <td>{{$link ?? ''->kc??''}}</td>
+            <td>{{$link->kc??''}}</td>
         </tr>
         <tr>
             <td>第四节课</td>
-            <td>{{$link ?? ''->kd??''}}</td>
+            <td>{{$link->kd??''}}</td>
         </tr>
         <tr>
             <td><a href="{{url('wei/upd?k_id='.$link->k_id)}}">修改课程</a></td>

@@ -74,12 +74,14 @@ class WeiXin extends Controller
     public function ke(){
         $data=$_GET;
         $token=$this->AccessToken($data['code']);
+        dump($token);
         $access_tokrn=$token['access_token'];
         $openid=$token['openid'];
         $user=WxUserModel::where('openid',$openid)->first();
         $ke=Ke::where('openid','=',$openid)->first();
-        if($ke){
-        return view('weixin.wx.index',['link'=>$ke]);
+        $kee=Ke::where('openid','=',$openid)->value('openid');
+        if($kee){
+        return view('weixin.wx.list',['link'=>$ke]);
         }else{
         return view('weixin.wx.index',['openid'=>$openid]);
         }
