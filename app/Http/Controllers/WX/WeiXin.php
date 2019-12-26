@@ -70,6 +70,7 @@ class WeiXin extends Controller
           </xml>';
           echo $link;
         }
+        //查看课程
         if ($xml_obj->Event=='CLICK') {
             //判断并且触发
             if ($xml_obj->EventKey=='1905ke') {
@@ -143,6 +144,22 @@ class WeiXin extends Controller
         unset($data['k_id']);
         unset($data['_token']);
         Ke::where('k_id','=',$id)->update($data);
+        $ke=Ke::where('openid','=','oQj6Rv3FhT85S9oSgg7V5uImOGRQ')->first();
+        $b='您的课程修改为'."\n".'第一节课'.$ke['ka']."\n".'第二节课'.$ke['kb']."\n".'第三节课'.$ke['kc']."\n".'第四节课'.$ke['kd'];
+        $url='https://api.weixin.qq.com/cgi-bin/message/mass/preview?access_token='.$this->access_token;
+        $qun=[
+            "touser"=>'oQj6Rv3FhT85S9oSgg7V5uImOGRQ',
+            "msgtype"=>"text",
+            "text"=>[
+                "content"=>$b
+            ]
+        ];
+        $json_qun=json_encode($qun,JSON_UNESCAPED_UNICODE);
+        $client= new Client();
+        $res=$client->request('POST',$url,[
+            'body'=>$json_qun
+        ]);
+        // /echo $res->getBody();
         echo '您的课程修改成功';
     }
 }
