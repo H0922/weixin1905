@@ -138,8 +138,11 @@ class WeiXin extends Controller
         return view('weixin.wx.upd',['link'=>$link]);
     }
     public function update(){
-       $data=request()->input();
-        Ke::update($data);
+        $data=request()->input();
+        $id=$data['k_id'];
+        unset($data['k_id']);
+        unset($data['_token']);
+        Ke::where('k_id','=',$id)->update($data);
         echo '您的课程修改成功';
     }
 }
