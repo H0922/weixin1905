@@ -46,6 +46,9 @@ Route::get('index/login','WeiXin\GoodsController@indexlogin');
 Route::get('wei','WX\WeiXin@wei');
 Route::post('wei','WX\WeiXin@wxer');
 Route::get('ke','WX\WeiXin@ke');
+Route::post('wx/insert','WX\WeiXin@insert');
+Route::get('sss','WX\WeiXin@sss');
+Route::get('wei/upd','WX\WeiXin@upd');
 
 Route::get('token','WX\WeiXin@token');
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\WX;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Model\WxUserModel;
+use App\Model\KeModel as Ke;
 class WeiXin extends Controller
 {
 
@@ -74,10 +75,14 @@ class WeiXin extends Controller
         $data=$_GET;
         $token=$this->AccessToken($data['code']);
         $access_tokrn=$token['access_token'];
-        $openid=$token=['openid'];
+        $openid=$token['openid'];
         $user=WxUserModel::where('openid',$openid)->first();
-        echo '课程管理页面';
-        dump($user);
+        $ke=Ke::where('openid','=',$openid)->first();
+        if($ke){
+        return view('weixin.wx.index',['link'=>$ke]);
+        }else{
+        return view('weixin.wx.index',['openid'=>$openid]);
+        }
     }
 
     public function AccessToken($code){
@@ -86,11 +91,23 @@ class WeiXin extends Controller
         $json=json_decode($data,true);
         return $json;
     }
-     //获取用户信息
-    //  public function Userxi($access_tokrn,$openid){
-    //     $url='https://api.weixin.qq.com/sns/userinfo?access_token='.$access_tokrn.'&openid='.$openid.'&lang=zh_CN';
-    //     $data=file_get_contents($url);
-    //     $json=json_decode($data,true);
-    //     return $json;
-    // }
+    //添加功能
+    public function insert(){
+        $data=request()->input();
+        unset($data['_token']);
+        Ke::insert($data);
+    }
+    public function sss(){
+        return view('weixin.wx.list');
+    }
+    //修改功能
+    public function upd(){
+        $id=request()->input();
+        $link=Ke::find($id);
+        return view('weixin.wx.upd',['link'=>$link]);
+    }
+    public function update(){
+       $data=request()->input();
+       Ke::updated($data);
+    }
 }
