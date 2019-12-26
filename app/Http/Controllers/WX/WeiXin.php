@@ -32,4 +32,42 @@ class WeiXin extends Controller
            die('not ok');
         }
     }
+      //接收微信的推送事件
+      public function wxer(){
+        //将接收的数据记录存到日志文件
+        $log_file="wx.log";
+        $xml_str=file_get_contents("php://input");
+        $data=date('Y-m-d H:i:s',time()).$xml_str;
+        file_put_contents($log_file,$data,FILE_APPEND);
+        $this->Usertext($xml_str);
+    }
+
+    //用户关注消息回复
+    public function Usertext($xml_str){
+        $xml_obj=simplexml_load_string($xml_str);
+            $openid= $xml_obj->FromUserName;
+            $touser=$xml_obj->ToUserName;
+            $time=time();
+            $getuser=WxUserModel::getUserInfo($openid);
+            // dd($getuser);
+        if($xml_obj->Event=="subscribe"){
+            $data=[
+                'openid'=>$openid,
+                'sex'=>$getuser['sex'],
+                'sub_time'=>$time,
+                'nickname'=>$getuser['nickname'],
+                'headimgurl'=>$getuser['headimgurl']
+            ];
+            WxUserModel::insert($data);
+            $con='欢迎'.$getuser['nickname'].'同学进入选课系统';
+            $link='<xml>
+            <ToUserName><![CDATA['.$openid.']]></ToUserName>
+            <FromUserName><![CDATA['.$touser.']]></FromUserName>
+            <CreateTime>'.$time.'</CreateTime>
+            <MsgType><![CDATA[text]]></MsgType>
+            <Content><![CDATA['.$con.']]></Content>
+          </xml>';
+          echo $link;
+        }
+    }
 }
