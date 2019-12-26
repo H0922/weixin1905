@@ -98,6 +98,7 @@ class WeiXin extends Controller
         $data=request()->input();
         unset($data['_token']);
         Ke::insert($data);
+        echo '您的课程提交成功';
     }
     public function sss(){
         return view('weixin.wx.list');
@@ -105,11 +106,13 @@ class WeiXin extends Controller
     //修改功能
     public function upd(){
         $id=request()->input();
-        $link=Ke::find($id);
+        $id=$id['k_id'];
+        $link=Ke::where('k_id','=',$id)->first();
         return view('weixin.wx.upd',['link'=>$link]);
     }
     public function update(){
        $data=request()->input();
        Ke::updated($data);
+        echo '您的课程修改成功';
     }
 }
