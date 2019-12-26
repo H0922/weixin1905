@@ -313,33 +313,49 @@ class wxcontroller extends Controller
         $qrscene_url=urlencode($qrscene);
         //dd('https://open.weixin.qq.com/connect/oauth2/authorize?appid='.env('WX_APPID').'&redirect_uri='.$goods_url.'&response_type=code&scope=snsapi_userinfo&state=1905goods#wechat_redirect');
         $url='https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->access_token;
+        // $menu=[
+        //     'button'=>[
+        //         [
+        //             'type'=>'view',
+        //             'name'=>'商城',
+        //             'url'=>'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.env('WX_APPID').'&redirect_uri='.$goods_url.'&response_type=code&scope=snsapi_userinfo&state=1905goods#wechat_redirect'
+        //         ],
+        //         [
+        //             'name'=>'这个可以点',
+        //             'sub_button'=>[
+        //             [
+        //                 'type'=>'view',
+        //                 'name'=>'投票业务',
+        //                 'url'=>'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.env('WX_APPID').'&redirect_uri='.$ewd_url.'&response_type=code&scope=snsapi_userinfo&state=1905wx#wechat_redirect'
+        //             ],
+        //             [
+        //                 'type'=>'click',
+        //                 'name'=>'获取天气',
+        //                 'key'=>'tianqi'
+        //             ],
+        //             [
+        //                 'type'=>'view',
+        //                 'name'=>'获取推荐二维码',
+        //                 'url'=>'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.env('WX_APPID').'&redirect_uri='.$qrscene_url.'&response_type=code&scope=snsapi_userinfo&state=1905qrscene#wechat_redirect'
+        //             ]
+        //             ]
+        //         ]
+        //     ]
+        // ];
+        $urlke='http://www.bianaoao.top/ke';
+        $url_url=urldecode($urlke);
         $menu=[
             'button'=>[
                 [
                     'type'=>'view',
-                    'name'=>'商城',
-                    'url'=>'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.env('WX_APPID').'&redirect_uri='.$goods_url.'&response_type=code&scope=snsapi_userinfo&state=1905goods#wechat_redirect'
-                ],
-                [
-                    'name'=>'这个可以点',
-                    'sub_button'=>[
-                    [
-                        'type'=>'view',
-                        'name'=>'投票业务',
-                        'url'=>'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.env('WX_APPID').'&redirect_uri='.$ewd_url.'&response_type=code&scope=snsapi_userinfo&state=1905wx#wechat_redirect'
-                    ],
-                    [
-                        'type'=>'click',
-                        'name'=>'获取天气',
-                        'key'=>'tianqi'
-                    ],
-                    [
-                        'type'=>'view',
-                        'name'=>'获取推荐二维码',
-                        'url'=>'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.env('WX_APPID').'&redirect_uri='.$qrscene_url.'&response_type=code&scope=snsapi_userinfo&state=1905qrscene#wechat_redirect'
-                    ]
-                    ]
+                    'name'=>'管理课程',
+                    'url'=>'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.env('WX_APPID').'&redirect_uri='.$url_url.'&response_type=code&scope=snsapi_userinfo&state=1905goods#wechat_redirect'
+                ],[
+                    "type"=>"click",
+                    "name"=>"查看课程",
+                    "key"=>"1905ke"
                 ]
+               
             ]
         ];
         $json_menu=json_encode($menu,JSON_UNESCAPED_UNICODE);
