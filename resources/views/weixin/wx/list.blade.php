@@ -26,7 +26,7 @@
             <td>{{$link->kd??''}}</td>
         </tr>
         <tr>
-            <td><a href="{{url('wei/upd?k_id='.$link->k_id)}}">修改课程</a></td>
+            <td><a href="{{url('wei/upd/'.$link->k_id)}}">修改课程</a></td>
             <td></td>
         </tr>
     </table>

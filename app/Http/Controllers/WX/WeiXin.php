@@ -105,10 +105,8 @@ class WeiXin extends Controller
         return view('weixin.wx.list');
     }
     //修改功能
-    public function upd(){
-        $id=request()->input();
-        $id=$id['k_id'];
-        $link=Ke::where('k_id','=',$id)->first();
+    public function upd($k_id){
+        $link=Ke::where('k_id','=',$k_id)->first();
         return view('weixin.wx.upd',['link'=>$link]);
     }
     public function update(){
