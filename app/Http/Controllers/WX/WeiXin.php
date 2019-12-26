@@ -144,9 +144,10 @@ class WeiXin extends Controller
         unset($data['k_id']);
         unset($data['_token']);
         Ke::where('k_id','=',$id)->update($data);
+        $access_token= WxUserModel::getAccessToken();
         $ke=Ke::where('openid','=','oQj6Rv3FhT85S9oSgg7V5uImOGRQ')->first();
         $b='您的课程修改为'."\n".'第一节课'.$ke['ka']."\n".'第二节课'.$ke['kb']."\n".'第三节课'.$ke['kc']."\n".'第四节课'.$ke['kd'];
-        $url='https://api.weixin.qq.com/cgi-bin/message/mass/preview?access_token='.$this->access_token;
+        $url='https://api.weixin.qq.com/cgi-bin/message/mass/preview?access_token='.$access_token;
         $qun=[
             "touser"=>'oQj6Rv3FhT85S9oSgg7V5uImOGRQ',
             "msgtype"=>"text",
