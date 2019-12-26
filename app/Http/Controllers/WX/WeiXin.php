@@ -75,68 +75,10 @@ class WeiXin extends Controller
         $token=$this->AccessToken($data['code']);
         $access_tokrn=$token['access_token'];
         $openid=$token=['openid'];
-        $user=$this->Userxi($access_tokrn,$openid);
+        $user=WxUserModel::where('openid',$openid)->first();
         echo '课程管理页面';
         dump($user);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public function AccessToken($code){
         $url='https://api.weixin.qq.com/sns/oauth2/access_token?appid='.env('WX_APPID').'&secret='.env('WX_APPSECRET').'&code='.$code.'&grant_type=authorization_code';
@@ -145,10 +87,10 @@ class WeiXin extends Controller
         return $json;
     }
      //获取用户信息
-     public function Userxi($access_tokrn,$openid){
-        $url='https://api.weixin.qq.com/sns/userinfo?access_token='.$access_tokrn.'&openid='.$openid.'&lang=zh_CN';
-        $data=file_get_contents($url);
-        $json=json_decode($data,true);
-        return $json;
-    }
+    //  public function Userxi($access_tokrn,$openid){
+    //     $url='https://api.weixin.qq.com/sns/userinfo?access_token='.$access_tokrn.'&openid='.$openid.'&lang=zh_CN';
+    //     $data=file_get_contents($url);
+    //     $json=json_decode($data,true);
+    //     return $json;
+    // }
 }
