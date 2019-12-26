@@ -72,7 +72,12 @@ class WeiXin extends Controller
     }
     public function ke(){
         $data=$_GET;
-        echo $data;
+        $token=$this->AccessToken($data['code']);
+        $access_tokrn=$token['access_token'];
+        $openid=$token=['openid'];
+        $user=$this->Userxi($access_tokrn,$openid);
+        echo '课程管理页面';
+        dump($user);
     }
 
 
